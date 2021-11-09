@@ -43,7 +43,11 @@ DB_PASSWORD=root
 ```
 composer install
 ```
-# 生成key
+## 生成key
 ```angular2html
 php artisan key:generate
+```
+## 填充默认用户
+```angular2html
+php artisan db:seed --class=UsersTableSeeder
 ```
