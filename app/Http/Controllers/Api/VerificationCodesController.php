@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\VerificationCodeRequest;
+use Cache;
 use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 
 class VerificationCodesController extends Controller
 {
@@ -12,13 +12,15 @@ class VerificationCodesController extends Controller
     {
         $phone = $request->phone;
         // 生成4位随机数，左侧补0
-        $code = str_pad(random_int(1, 9999), 4, 0, STR_PAD_LEFT);
+//        $code = str_pad(random_int(1, 9999), 4, 0, STR_PAD_LEFT);
+        $code = '1234'; //测试
         // todo 发送短息
 
         $key = 'verificationCode_' . Str::random(15);
         $expiredAt = now()->addMinutes(5);
         // 缓存验证码 5 分钟过期。
-        \Cache::put($key, ['phone' => $phone, 'code' => $code], $expiredAt);
+
+        Cache::put($key, ['phone' => $phone, 'code' => $code], $expiredAt);
 
         return response()->json([
             'key' => $key,
