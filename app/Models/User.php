@@ -16,7 +16,9 @@ class User extends Authenticatable
         'password',
         'phone',
         'introduction',
-        'avatar'
+        'avatar',
+        'weixin_openid',
+        'weixin_unionid'
     ];
 
     protected $hidden = [

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\AuthorizationsController;
 use App\Http\Controllers\Api\CaptchasController;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\VerificationCodesController;
@@ -19,9 +20,16 @@ Route::prefix('v1')
                 Route::post('users', [UsersController::class, 'store'])
                     ->name('users.store');
 
+                // 第三方登录
+                Route::post('socials/{social_type}/authorizations',
+                    [AuthorizationsController::class, 'socialStore'])
+                    ->where('social_type', 'wechat')
+                    ->name('socials.authorizations.store');
+
                 // 图片验证码
                 Route::post('captchas', [CaptchasController::class, 'store'])
                     ->name('captchas.store');
+
             });
         Route::middleware('throttle:' . config('api.rate_limits.access'))
             ->group(function () {
