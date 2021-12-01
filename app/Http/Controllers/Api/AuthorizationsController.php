@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\SocialAuthorizationRequest;
 use App\Models\User;
 use Exception;
 use Illuminate\Auth\AuthenticationException;
+use Laravel\Passport\Http\Controllers\AccessTokenController;
 use Overtrue\LaravelSocialite\Socialite;
+use Psr\Http\Message\ServerRequestInterface;
 
-class AuthorizationsController extends Controller
+class AuthorizationsController extends AccessTokenController
 {
     /**
      * @throws AuthenticationException
@@ -56,5 +57,15 @@ class AuthorizationsController extends Controller
 
         return response()->json(['token' => $user->id]);
 
+    }
+
+    public function store(ServerRequestInterface $request)
+    {
+        return $this->issueToken($request)->setStatusCode(201);
+    }
+
+    public function update(ServerRequestInterface $request): \Illuminate\Http\Response
+    {
+        return $this->issueToken($request);
     }
 }
