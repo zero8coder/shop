@@ -68,4 +68,18 @@ class AuthorizationsController extends AccessTokenController
     {
         return $this->issueToken($request);
     }
+
+    /**
+     * @throws AuthenticationException
+     */
+    public function destroy()
+    {
+        if (auth('api')->check()) {
+            auth('api')->user()->token()->revoke();
+            return response(null, 204);
+        } else {
+            throw new AuthenticationException('The token is invalid.');
+        }
+
+    }
 }
