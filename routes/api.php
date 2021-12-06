@@ -20,14 +20,6 @@ Route::prefix('v1')
                 Route::post('users', [UsersController::class, 'store'])
                     ->name('users.store');
 
-                // 第三方登录
-                Route::post(
-                    'socials/{social_type}/authorizations',
-                    [AuthorizationsController::class, 'socialStore']
-                )
-                    ->where('social_type', 'wechat')
-                    ->name('socials.authorizations.store');
-
                 // 登录
                 Route::post('authorizations', [AuthorizationsController::class, 'store'])
                     ->name('authorizations.store');
