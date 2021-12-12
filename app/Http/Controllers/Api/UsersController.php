@@ -8,6 +8,7 @@ use App\Http\Resources\UserResource;
 use App\Models\User;
 use Cache;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Http\Request;
 
 class UsersController extends Controller
 {
@@ -33,7 +34,17 @@ class UsersController extends Controller
 
         Cache::forget($request->input('verification_key'));
 
-        return new UserResource($user);
+        return (new UserResource($user))->showSensitiveFields();
 
+    }
+
+    public function show(User $user): UserResource
+    {
+        return new UserResource($user);
+    }
+
+    public function me(Request $request): UserResource
+    {
+        return (new UserResource($request->user()))->showSensitiveFields();
     }
 }
