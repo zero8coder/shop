@@ -45,6 +45,8 @@ Route::prefix('v1')
                 Route::middleware('auth:api')->group(function () {
                     // 当前登录用户信息
                     Route::get('user', [UsersController::class, 'me'])->name('user.show');
+                    // 上传图片
+                    Route::post('images', [ImagesController::class, 'store'])->name('images.store');
                 });
             });
     });
