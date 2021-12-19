@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Api\VerificationCodeRequest;
 use Cache;
+use Exception;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Support\Str;
 
@@ -33,7 +34,11 @@ class VerificationCodesController extends Controller
             $code = '1234';
         } else {
             // 生成4位随机数，左侧补0
-            $code = str_pad(random_int(1, 9999), 4, 0, STR_PAD_LEFT);
+            try {
+                $code = str_pad(random_int(1, 9999), 4, 0, STR_PAD_LEFT);
+            } catch (Exception $e) {
+                throw new AuthenticationException('生成验证失败');
+            }
             // todo 发送短息
         }
 
