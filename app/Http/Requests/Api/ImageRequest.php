@@ -13,7 +13,7 @@ class ImageRequest extends FormRequest
         return $rules;
     }
 
-    public function messages()
+    public function messages(): array
     {
         return [
             'image.dimensions' => '图片的清晰度不够，宽和高需要 200px 以上'
