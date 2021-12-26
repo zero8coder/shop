@@ -11,7 +11,7 @@ use Str;
 
 class ImagesController extends Controller
 {
-    public function store(ImageRequest $request, ImageUploadHandler $uploader, Image $image)
+    public function store(ImageRequest $request, ImageUploadHandler $uploader, Image $image): ImageResource
     {
         $user = $request->user();
         $type = $request->input('type');

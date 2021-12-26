@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\UserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\Image;
 use App\Models\User;
 use Cache;
 use Illuminate\Auth\AuthenticationException;
@@ -15,7 +16,7 @@ class UsersController extends Controller
     /**
      * @throws AuthenticationException
      */
-    public function store(UserRequest $request)
+    public function store(UserRequest $request): UserResource
     {
         $verifyData = Cache::get($request->input('verification_key'));
         if (!$verifyData) {
@@ -27,8 +28,8 @@ class UsersController extends Controller
         }
 
         $user = User::create([
-            'name' => $request->input('name'),
-            'phone' => $verifyData['phone'],
+            'name'     => $request->input('name'),
+            'phone'    => $verifyData['phone'],
             'password' => $request->input('password')
         ]);
 
@@ -46,5 +47,18 @@ class UsersController extends Controller
     public function me(Request $request): UserResource
     {
         return (new UserResource($request->user()))->showSensitiveFields();
+    }
+
+    public function update(UserRequest $request): UserResource
+    {
+        $user       = $request->user();
+        $attributes = $request->only(['name', 'email', 'introduction']);
+
+        if ($request->avatar_image_id) {
+            $image                = Image::find($request->avatar_image_id);
+            $attributes['avatar'] = $image->path;
+        }
+        $user->update($attributes);
+        return (new UserResource($user))->showSensitiveFields();
     }
 }
