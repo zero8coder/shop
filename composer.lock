@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "02d1844b2311fa58df66af9a8b18daef",
+    "content-hash": "d387ef169ba45ba87eda15373760573a",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -8352,6 +8352,63 @@
             "time": "2021-09-20T15:06:32+00:00"
         },
         {
+            "name": "overtrue/laravel-query-logger",
+            "version": "2.1.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/overtrue/laravel-query-logger.git",
+                "reference": "46b546aa2c4f6319ce798c8f8128b08718b32bae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/overtrue/laravel-query-logger/zipball/46b546aa2c4f6319ce798c8f8128b08718b32bae",
+                "reference": "46b546aa2c4f6319ce798c8f8128b08718b32bae",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/framework": "~5.5||~6.0||~7.0||~8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Overtrue\\LaravelQueryLogger\\ServiceProvider"
+                    ]
+                },
+                "hooks": {
+                    "pre-commit": [
+                        "composer test",
+                        "composer fix-style"
+                    ],
+                    "pre-push": [
+                        "composer test",
+                        "composer check-style"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Overtrue\\LaravelQueryLogger\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "overtrue",
+                    "email": "anzhengchao@gmail.com"
+                }
+            ],
+            "description": "A dev tool to log all queries for laravel application.",
+            "support": {
+                "issues": "https://github.com/overtrue/laravel-query-logger/issues",
+                "source": "https://github.com/overtrue/laravel-query-logger/tree/2.1.4"
+            },
+            "time": "2021-08-12T08:49:45+00:00"
+        },
+        {
             "name": "phar-io/manifest",
             "version": "2.0.3",
             "source": {
@@ -10134,5 +10191,5 @@
         "php": "^7.3|^8.0"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.0.0"
+    "plugin-api-version": "2.1.0"
 }
