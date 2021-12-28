@@ -3,30 +3,27 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Notifications\Notifiable;
-use Laravel\Passport\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
-class User extends Authenticatable
+/**
+ * @method static create(array $array)
+ */
+class Admin extends Model
 {
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasFactory;
 
     protected $fillable = [
         'name',
         'email',
+        'sex',
         'password',
         'phone',
-        'introduction',
         'avatar',
-        'weixin_openid',
-        'weixin_unionid'
     ];
 
     protected $hidden = [
         'password',
-        'remember_token',
-        'weixin_openid',
-        'weixin_unionid',
+        'remember_token'
     ];
 
     protected $casts = [
@@ -43,14 +40,5 @@ class User extends Authenticatable
         }
 
         $this->attributes['password'] = $value;
-    }
-
-    public function findForPassport($username): User
-    {
-        filter_var($username, FILTER_VALIDATE_EMAIL) ?
-            $credentials['email'] = $username :
-            $credentials['phone'] = $username;
-
-        return self::where($credentials)->first();
     }
 }

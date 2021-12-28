@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\AdminsController;
 use App\Http\Controllers\Api\AuthorizationsController;
 use App\Http\Controllers\Api\CaptchasController;
 use App\Http\Controllers\Api\ImagesController;
@@ -56,5 +57,13 @@ Route::prefix('v1')
                     // 上传图片
                     Route::post('images', [ImagesController::class, 'store'])->name('images.store');
                 });
+
+                Route::prefix('admin')
+                    ->name('admin.')
+                    ->group(function () {
+                        // 添加后台人员
+                        Route::post('admins', [AdminsController::class, 'store'])
+                            ->name('admins.store');
+                    });
             });
     });
