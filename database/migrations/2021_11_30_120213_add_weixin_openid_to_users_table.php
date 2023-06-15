@@ -19,8 +19,7 @@ class AddWeixinOpenidToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('weixin_openid');
-            $table->dropColumn('weixin_unionid');
+            $table->dropColumn(['weixin_openid', 'weixin_unionid']);
             $table->string('password')->nullable(false)->change();
         });
     }

@@ -51,3 +51,9 @@ php artisan key:generate
 ```angular2html
 php artisan db:seed --class=UsersTableSeeder
 ```
+
+## 设置 passport
+```angular2html
+php artisan passport:keys
+php artisan passport:client --password --name='shop-user'
+```
