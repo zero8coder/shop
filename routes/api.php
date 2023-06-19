@@ -57,13 +57,5 @@ Route::prefix('v1')
                     // 上传图片
                     Route::post('images', [ImagesController::class, 'store'])->name('images.store');
                 });
-
-                Route::prefix('admin')
-                    ->name('admin.')
-                    ->group(function () {
-                        // 添加后台人员
-                        Route::post('admins', [AdminsController::class, 'store'])
-                            ->name('admins.store');
-                    });
             });
     });

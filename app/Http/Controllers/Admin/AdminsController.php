@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Controllers\Api\Admin;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Api\Admin\AdminRequest;
+use App\Http\Requests\Admin\AdminRequest;
 use App\Http\Resources\Admin\AdminResource;
 use App\Models\Admin;
 
