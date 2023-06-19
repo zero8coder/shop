@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -52,5 +53,10 @@ class User extends Authenticatable
             $credentials['phone'] = $username;
 
         return self::where($credentials)->first();
+    }
+
+    protected function serializeDate(DateTimeInterface $date): string
+    {
+        return $date->format($this->dateFormat ?: 'Y-m-d H:i:s');
     }
 }
