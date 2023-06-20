@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Api;
 
+use App\Http\Requests\FormRequest;
+
 /**
  * @property mixed avatar_image_id
  */

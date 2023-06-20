@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Api;
 
+use App\Http\Requests\FormRequest;
+
 class VerificationCodeRequest extends FormRequest
 {
     public function rules(): array

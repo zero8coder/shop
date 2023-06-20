@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Api;
 
+use App\Http\Requests\FormRequest;
+
 class SocialAuthorizationRequest extends FormRequest
 {
     public function rules()
