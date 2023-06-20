@@ -12,7 +12,7 @@ class AdminLoginTest extends TestCase
         $client = $this->createAdminPasswordClient();
         $admin = Admin::factory()->create();
 
-        $response = $this->post(route('api.v1.authorizations.store'), [
+        $response = $this->post(route('admin.v1.admins.login'), [
             'grant_type' => 'password',
             'client_id' => $client->id,
             'client_secret' => $client->secret,
