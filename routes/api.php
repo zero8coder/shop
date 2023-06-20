@@ -1,12 +1,11 @@
 <?php
 
-use App\Http\Controllers\Api\Admin\AdminsController;
-use App\Http\Controllers\Api\AuthorizationsController;
 use App\Http\Controllers\Api\CaptchasController;
 use App\Http\Controllers\Api\ImagesController;
 use App\Http\Controllers\Api\TestController;
 use App\Http\Controllers\Api\UsersController;
 use App\Http\Controllers\Api\VerificationCodesController;
+use App\Http\Controllers\AuthorizationsController;
 use Illuminate\Support\Facades\Route;
 
 Route::prefix('v1')

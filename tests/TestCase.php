@@ -13,15 +13,29 @@ abstract class TestCase extends BaseTestCase
     use CreatesApplication;
     use DatabaseMigrations;
 
-    // 创建密码方式的客户端
-    public function createPasswordClient(): \Laravel\Passport\Client
+    // 创建密码方式的用户客户端
+    public function createUserPasswordClient(): \Laravel\Passport\Client
     {
         $clientRepository = new ClientRepository();
         return $clientRepository->create(
             null,
-            'Test Client',
+            'shop-user',
             url('/redirect'),
+            'users',
+            false,
+            true
+        );
+    }
+
+    // 创建密码方式的管理员客户端
+    public function createAdminPasswordClient(): \Laravel\Passport\Client
+    {
+        $clientRepository = new ClientRepository();
+        return $clientRepository->create(
             null,
+            'shop-admin',
+            url('/redirect'),
+            'admins',
             false,
             true
         );

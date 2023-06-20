@@ -2,7 +2,7 @@
 
 namespace App\Http\Requests\Admin;
 
-use App\Http\Requests\Api\FormRequest;
+use App\Http\Requests\FormRequest;
 
 class AdminRequest extends FormRequest
 {

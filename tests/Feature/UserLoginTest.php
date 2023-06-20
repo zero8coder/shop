@@ -4,15 +4,14 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Cache;
-use DB;
 use Tests\TestCase;
 
-class LoginTest extends TestCase
+class UserLoginTest extends TestCase
 {
     // 密码方式获取token
     public function test_login_by_password()
     {
-        $client = $this->createPasswordClient();
+        $client = $this->createUserPasswordClient();
         $user = User::factory()->create();
 
         $response = $this->post(route('api.v1.authorizations.store'), [
