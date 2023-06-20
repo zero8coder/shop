@@ -36,11 +36,13 @@ class LoginTest extends TestCase
     public function test_pic_code()
     {
         $response = $this->post(route('api.v1.captchas.store'), ['phone' => '13160675344']);
-        $response->assertStatus(201);
+        $response->assertStatus(200);
         $response->assertJsonStructure([
-            'captcha_key',
-            'expired_at',
-            'captcha_image_content',
+            'data' => [
+                'captcha_key',
+                'expired_at',
+                'captcha_image_content'
+            ]
         ]);
     }
 
@@ -49,12 +51,13 @@ class LoginTest extends TestCase
     {
         $response = $this->post(route('api.v1.captchas.store'), ['phone' => '13160675344']);
         $data = $response->json();
+        $captcha_key = $data['data']['captcha_key'];
         $response = $this->post(route('api.v1.users.store'), [
             'name' => 'king',
             'password' => '123434',
-            'verification_key' => $data['captcha_key'],
-            'verification_code' => (Cache::get($data['captcha_key']))['code'],
+            'verification_key' => $captcha_key,
+            'verification_code' => (Cache::get($captcha_key))['code'],
         ]);
-        $response->assertStatus(201);
+        $response->assertStatus(200);
     }
 }

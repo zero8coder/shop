@@ -16,7 +16,7 @@ class UsersController extends Controller
     /**
      * @throws AuthenticationException
      */
-    public function store(UserRequest $request): UserResource
+    public function store(UserRequest $request)
     {
         $verifyData = Cache::get($request->input('verification_key'));
         if (!$verifyData) {
@@ -35,21 +35,21 @@ class UsersController extends Controller
 
         Cache::forget($request->input('verification_key'));
 
-        return (new UserResource($user))->showSensitiveFields();
+        return $this->success((new UserResource($user))->showSensitiveFields());
 
     }
 
-    public function show(User $user): UserResource
+    public function show(User $user)
     {
-        return new UserResource($user);
+        return $this->success(new UserResource($user));
     }
 
-    public function me(Request $request): UserResource
+    public function me(Request $request)
     {
-        return (new UserResource($request->user()))->showSensitiveFields();
+        return $this->success((new UserResource($request->user()))->showSensitiveFields());
     }
 
-    public function update(UserRequest $request): UserResource
+    public function update(UserRequest $request)
     {
         $user       = $request->user();
         $attributes = $request->only(['name', 'email', 'introduction']);
@@ -59,6 +59,6 @@ class UsersController extends Controller
             $attributes['avatar'] = $image->path;
         }
         $user->update($attributes);
-        return (new UserResource($user))->showSensitiveFields();
+        return $this->success((new UserResource($user))->showSensitiveFields());
     }
 }

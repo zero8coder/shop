@@ -18,7 +18,7 @@ class UploadImageTest extends TestCase
             'type'  => 'avatar',
             'image' => $file,
         ]);
-        $response->assertStatus(201);
+        $response->assertStatus(200);
         $this->assertCount(1, Image::all());
     }
 }

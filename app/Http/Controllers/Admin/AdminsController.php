@@ -9,7 +9,7 @@ use App\Models\Admin;
 
 class AdminsController extends Controller
 {
-    public function store(AdminRequest $request): AdminResource
+    public function store(AdminRequest $request)
     {
         $admin = Admin::create([
             'name' => $request->input('name'),
@@ -18,6 +18,6 @@ class AdminsController extends Controller
             'sex' => $request->input('sex')
         ]);
 
-        return new AdminResource($admin);
+        return $this->success(new AdminResource($admin));
     }
 }

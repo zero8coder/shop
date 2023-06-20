@@ -18,7 +18,7 @@ class AdminTest extends TestCase
             'sex' => '1',
         ];
         $response = $this->post(route('admin.v1.admins.store'), $data);
-        $response->assertStatus(201);
+        $response->assertStatus(200);
         $response->assertsee($data['name']);
     }
 }
