@@ -3,7 +3,6 @@
 
 namespace App\Http\Controllers;
 
-
 use Symfony\Component\HttpFoundation\Response;
 
 trait ApiResponse
@@ -16,20 +15,20 @@ trait ApiResponse
      * @param bool $status
      * @return \Illuminate\Http\JsonResponse
      */
-    public function success($data = [], string $message = "请求成功", int $code = Response::HTTP_OK, $status = 'success'): \Illuminate\Http\JsonResponse
+    public function success($data = [], string $message = "请求成功", $http_code = Response::HTTP_OK, int $business_code = Response::HTTP_OK, $status = 'success'): \Illuminate\Http\JsonResponse
     {
-        return response()->json(['status' => $status, 'code' => $code, 'message' => $message, 'data' => $data]);
+        return response()->json(['status' => $status, 'code' => $business_code, 'message' => $message, 'data' => $data], $http_code);
     }
 
     /**
      * 返回失败信息
-     * @param $code
      * @param $message
-     * @param bool $status
+     * @param $code
+     * @param string $status
      * @return \Illuminate\Http\JsonResponse
      */
-    public function error($code, $message, string $status = 'error'): \Illuminate\Http\JsonResponse
+    public function error($message, $http_code = Response::HTTP_INTERNAL_SERVER_ERROR, $business_code = 500, string $status = 'error'): \Illuminate\Http\JsonResponse
     {
-        return response()->json(['status' => $status, 'code' => $code, 'message' => $message]);
+        return response()->json(['status' => $status, 'code' => $business_code, 'message' => $message], $http_code);
     }
 }
