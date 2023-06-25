@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminRequest;
+use App\Http\Requests\Admin\UpdateAdminRequest;
 use App\Http\Resources\Admin\AdminResource;
 use App\Models\Admin;
 
@@ -20,4 +21,11 @@ class AdminsController extends Controller
 
         return $this->success(new AdminResource($admin));
     }
+
+    public function update(Admin $admin, UpdateAdminRequest $request)
+    {
+        $admin->fill($request->only(['email', 'sex']))->update();
+        return $this->success(new AdminResource($admin));
+    }
+
 }

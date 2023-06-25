@@ -11,7 +11,15 @@ Route::prefix('v1')
         // 登录
         Route::post('login', [AuthorizationsController::class, 'store'])
             ->name('admins.login');
-        // 添加后台人员
-        Route::post('admins', [AdminsController::class, 'store'])
-            ->name('admins.store');
+
+        Route::middleware('auth:admin')->group(function () {
+            // 添加后台人员
+            Route::post('admins', [AdminsController::class, 'store'])
+                ->name('admins.store');
+
+            // 修改后台人员
+            Route::patch('admins/{admin}', [AdminsController::class, 'update'])
+                ->name('admins.update');
+        });
+
     });

@@ -2,6 +2,7 @@
 
 namespace Tests;
 
+use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -49,4 +50,14 @@ abstract class TestCase extends BaseTestCase
         $this->actingAs($user);
         return $this;
     }
+
+    // 登录管理员用户
+    protected function signInAdmin($admin = null)
+    {
+        $admin = $admin ?: Admin::factory()->create();
+        Passport::actingAs($admin, [], 'admin');
+        $this->actingAs($admin, 'admin');
+        return $this;
+    }
+
 }

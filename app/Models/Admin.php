@@ -30,6 +30,13 @@ class Admin extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    const SEX_MAN = 1;
+    const SEX_WOMAN = 2;
+    public static $sexMap = [
+        self::SEX_MAN   => 1,
+        self::SEX_WOMAN => 2,
+    ];
+
     public function setPasswordAttribute($value)
     {
         // 如果值的长度等于 60，即认为是已经做过加密的情况
