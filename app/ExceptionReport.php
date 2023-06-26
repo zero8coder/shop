@@ -90,7 +90,7 @@ class ExceptionReport
     public function report()
     {
         $message = $this->doReport[$this->report];
-        return $this->error($message[0], $message[1], $message);
+        return $this->error($message[0], $message[1], $message[1]);
     }
     public function prodReport()
     {
