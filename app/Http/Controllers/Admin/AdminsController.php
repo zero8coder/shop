@@ -17,7 +17,8 @@ class AdminsController extends Controller
             'name' => $request->input('name'),
             'password' => $request->input('password'),
             'phone' => $request->input('phone'),
-            'sex' => $request->input('sex')
+            'sex' => $request->input('sex'),
+            'email' => $request->input('email')
         ]);
 
         return $this->success(new AdminResource($admin));
@@ -25,7 +26,7 @@ class AdminsController extends Controller
 
     public function update(Admin $admin, UpdateAdminRequest $request)
     {
-        $admin->fill($request->only(['email', 'sex']))->update();
+        $admin->fill($request->only(['phone', 'email', 'sex']))->update();
         return $this->success(new AdminResource($admin));
     }
 

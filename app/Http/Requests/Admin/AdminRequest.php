@@ -12,7 +12,8 @@ class AdminRequest extends FormRequest
             'name'     => 'required|between:3,25|regex:/^[A-Za-z0-9\-\_]+$/|unique:admins,name',
             'password' => 'required|alpha_dash|min:6',
             'phone'    => 'required|phone:CN,mobile|unique:admins',
-            'sex'      => 'in:1,2'
+            'sex'      => 'required|in:1,2',
+            'email'    => 'required|email|unique:admins,email'
         ];
     }
 }

@@ -11,6 +11,7 @@ class UpdateAdminRequest extends FormRequest
     {
         $adminId = auth('admin')->id();
         return [
+            'phone' => 'phone:CN,mobile|unique:admins',
             'email' => 'email|unique:admins,email,' . $adminId,
             'sex'   => 'in:1,2'
         ];

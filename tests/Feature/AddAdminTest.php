@@ -23,6 +23,7 @@ class AddAdminTest extends TestCase
             'password' => '123456',
             'phone'    => '13160675344',
             'sex'      => '1',
+            'email' => '812429293@qq.com'
         ];
         $response = $this->json('post', route('admin.v1.admins.store'), $data);
         $response->assertStatus(200);
