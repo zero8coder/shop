@@ -20,6 +20,9 @@ Route::prefix('v1')
             // 修改后台人员
             Route::patch('admins/{admin}', [AdminsController::class, 'update'])
                 ->name('admins.update');
+            // 修改后台人员
+            Route::delete('admins/{admin}', [AdminsController::class, 'destroy'])
+                ->name('admins.del');
         });
 
     });

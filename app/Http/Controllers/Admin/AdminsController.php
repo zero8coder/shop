@@ -7,6 +7,7 @@ use App\Http\Requests\Admin\AdminRequest;
 use App\Http\Requests\Admin\UpdateAdminRequest;
 use App\Http\Resources\Admin\AdminResource;
 use App\Models\Admin;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdminsController extends Controller
 {
@@ -26,6 +27,12 @@ class AdminsController extends Controller
     {
         $admin->fill($request->only(['email', 'sex']))->update();
         return $this->success(new AdminResource($admin));
+    }
+
+    public function destroy(Admin $admin)
+    {
+        $admin->delete();
+        return $this->success([], '删除成功', Response::HTTP_NO_CONTENT);
     }
 
 }
