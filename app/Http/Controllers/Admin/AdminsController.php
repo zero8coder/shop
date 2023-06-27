@@ -33,7 +33,7 @@ class AdminsController extends Controller
     public function destroy(Admin $admin)
     {
         $admin->delete();
-        return $this->success([], '删除成功', Response::HTTP_NO_CONTENT);
+        return $this->success([], '删除成功');
     }
 
 }

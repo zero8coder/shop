@@ -20,7 +20,7 @@ class DelAdminTest extends TestCase
         $this->signInAdmin();
         $admin = Admin::factory()->create();
         $response = $this->json('DELETE', route('admin.v1.admins.del', ['admin' => $admin->id]));
-        $response->assertStatus(204);
+        $response->assertStatus(200);
         $this->assertDatabaseMissing('admins', ['id' => $admin->id]);
     }
 }
