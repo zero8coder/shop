@@ -33,8 +33,8 @@ class Admin extends Authenticatable
     const SEX_MAN = 1;
     const SEX_WOMAN = 2;
     public static $sexMap = [
-        self::SEX_MAN   => 1,
-        self::SEX_WOMAN => 2,
+        self::SEX_MAN   => '男',
+        self::SEX_WOMAN => '女',
     ];
 
     public function setPasswordAttribute($value)
