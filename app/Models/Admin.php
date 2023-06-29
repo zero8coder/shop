@@ -9,6 +9,7 @@ use Laravel\Passport\HasApiTokens;
 
 /**
  * @method static latest()
+ * @method static create(array $array)
  */
 class Admin extends Authenticatable
 {
