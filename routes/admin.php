@@ -24,6 +24,11 @@ Route::prefix('v1')
             // 删除后台人员
             Route::delete('admins/{admin}', [AdminsController::class, 'destroy'])
                 ->name('admins.del');
+
+            // 后台人员列表
+            Route::get('admins/index', [AdminsController::class, 'index'])
+                ->name('admins.index');
+
         });
 
     });
