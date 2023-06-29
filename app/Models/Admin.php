@@ -7,6 +7,9 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
 
 
+/**
+ * @method static latest()
+ */
 class Admin extends Authenticatable
 {
     use HasFactory;
