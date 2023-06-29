@@ -7,11 +7,12 @@ use App\Http\Requests\Admin\AdminRequest;
 use App\Http\Requests\Admin\UpdateAdminRequest;
 use App\Http\Resources\Admin\AdminResource;
 use App\Models\Admin;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AdminsController extends Controller
 {
-    public function store(AdminRequest $request): \Illuminate\Http\JsonResponse
+    public function store(AdminRequest $request): JsonResponse
     {
         $admin = Admin::create([
             'name' => $request->input('name'),
@@ -24,19 +25,19 @@ class AdminsController extends Controller
         return $this->success(new AdminResource($admin));
     }
 
-    public function update(Admin $admin, UpdateAdminRequest $request): \Illuminate\Http\JsonResponse
+    public function update(Admin $admin, UpdateAdminRequest $request): JsonResponse
     {
         $admin->fill($request->only(['phone', 'email', 'sex']))->update();
         return $this->success(new AdminResource($admin));
     }
 
-    public function destroy(Admin $admin): \Illuminate\Http\JsonResponse
+    public function destroy(Admin $admin): JsonResponse
     {
         $admin->delete();
         return $this->success([], '删除成功');
     }
 
-    public function index(Request $request): \Illuminate\Http\JsonResponse
+    public function index(Request $request): JsonResponse
     {
         $perPage = $request->input('perPage', 15);
         $admins = Admin::latest()
