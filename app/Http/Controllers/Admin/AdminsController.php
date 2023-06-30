@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminRequest;
 use App\Http\Requests\Admin\UpdateAdminRequest;
 use App\Http\Resources\Admin\AdminResource;
+use App\Jobs\ExportTaskJob;
 use App\Models\Admin;
+use App\Models\ExportTask;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -53,5 +55,12 @@ class AdminsController extends Controller
             ->paginate($perPage);
 
         return $this->success($this->formatPaginatorData(AdminResource::collection($admins)));
+    }
+
+    public function addExportTask(Request $request): JsonResponse
+    {
+        $exportTask = ExportTask::addTask('导出管理员', 'admin', $request->all());
+        ExportTaskJob::dispatch($exportTask);
+        return $this->success();
     }
 }

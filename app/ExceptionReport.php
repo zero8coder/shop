@@ -35,9 +35,9 @@ class ExceptionReport
     /**
      * ExceptionReport constructor.
      * @param Request $request
-     * @param Exception $exception
+     * @param  $exception
      */
-    public function __construct(Request $request, Exception $exception)
+    public function __construct(Request $request, $exception)
     {
         $this->request = $request;
         $this->exception = $exception;

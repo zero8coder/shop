@@ -29,6 +29,9 @@ Route::prefix('v1')
             Route::get('admins/index', [AdminsController::class, 'index'])
                 ->name('admins.index');
 
+            // 后台人员导出任务
+            Route::post('admins/exportTask', [AdminsController::class, 'addExportTask'])
+                ->name('admins.exportTask');
         });
 
     });
