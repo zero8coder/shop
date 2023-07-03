@@ -2,8 +2,13 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
+/**
+ * @property mixed module
+ * @property mixed param
+ */
 class ExportTask extends Model
 {
     use HasFactory;
@@ -32,6 +37,10 @@ class ExportTask extends Model
         'param' => 'json'
     ];
 
+    public static $moduleMap = [
+        'admin' => 'AdminExport',
+    ];
+
     public static function addTask($name, $module, $param = [])
     {
         return self::query()->create([
@@ -43,5 +52,15 @@ class ExportTask extends Model
             'admin_id' => auth('admin')->id(),
             'admin_name' => auth('admin')->user()['name'] ?? ''
         ]);
+    }
+
+    public function isWait()
+    {
+        return self::STATUS_WAIT == $this->status;
+    }
+
+    public static function exportFilesSuffix(): string
+    {
+        return Carbon::now()->toDateTimeString() . '-' . auth('admin')->user()['name'] ?? '';
     }
 }

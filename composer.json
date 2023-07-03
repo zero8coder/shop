@@ -19,7 +19,8 @@
         "overtrue/laravel-lang": "~4.0",
         "overtrue/laravel-socialite": "~3.0",
         "predis/predis": "^2.1",
-        "propaganistas/laravel-phone": "^4.3"
+        "propaganistas/laravel-phone": "^4.3",
+        "ext-xlswriter": "*"
     },
     "require-dev": {
         "barryvdh/laravel-ide-helper": "^2.12",

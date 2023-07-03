@@ -10,6 +10,7 @@ use Laravel\Passport\HasApiTokens;
 /**
  * @method static latest()
  * @method static create(array $array)
+ * @property mixed sex
  */
 class Admin extends Authenticatable
 {
@@ -57,5 +58,11 @@ class Admin extends Authenticatable
     public function findForPassport($username)
     {
         return self::where(['name' => $username])->first();
+    }
+
+    // 获取性别名称
+    public function getSexNameAttribute(): string
+    {
+        return self::$sexMap[$this->sex] ?? '';
     }
 }

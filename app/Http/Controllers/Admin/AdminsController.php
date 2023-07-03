@@ -9,6 +9,7 @@ use App\Http\Resources\Admin\AdminResource;
 use App\Jobs\ExportTaskJob;
 use App\Models\Admin;
 use App\Models\ExportTask;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -59,7 +60,7 @@ class AdminsController extends Controller
 
     public function addExportTask(Request $request): JsonResponse
     {
-        $exportTask = ExportTask::addTask('导出管理员', 'admin', $request->all());
+        $exportTask = ExportTask::addTask('导出管理员' . auth()->id() . Carbon::now()->toDateTimeString(), 'admin', $request->all());
         ExportTaskJob::dispatch($exportTask);
         return $this->success();
     }
