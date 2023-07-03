@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Filters\BaseFilters;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Passport\HasApiTokens;
@@ -64,5 +65,11 @@ class Admin extends Authenticatable
     public function getSexNameAttribute(): string
     {
         return self::$sexMap[$this->sex] ?? '';
+    }
+
+    // 过滤器
+    public function scopeFilter($query, BaseFilters $filters)
+    {
+        return $filters->apply($query);
     }
 }

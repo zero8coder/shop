@@ -23,6 +23,7 @@ class AdminExportTest extends TestCase
 
     public function test_export_task_job_handle()
     {
+        Admin::factory()->count(3)->create();
         $admin = Admin::factory()->create([
             'name'  => 'libai',
             'phone' => '13160674344',
@@ -31,7 +32,7 @@ class AdminExportTest extends TestCase
         ]);
         $this->signInAdmin($admin);
         $name = '导出管理员' . ExportTask::exportFilesSuffix();
-        $task = ExportTask::addTask($name, 'admin', []);
+        $task = ExportTask::addTask($name, 'admin', ['name' => $admin->name]);
         $job = new ExportTaskJob($task);
         $result = $job->handle();
         // 判断是否执行成功
@@ -58,5 +59,5 @@ class AdminExportTest extends TestCase
         // 判断数据是否符合预期
         $this->assertEquals($expectedData, $actualData);
     }
-    
+
 }

@@ -10,7 +10,7 @@ class CreateExportTasksTable extends Migration
     {
         Schema::create('export_tasks', function (Blueprint $table) {
             $table->id();
-            $table->string('name', 16)->nullable('false')->default('')->comment('文件名称');
+            $table->string('name', 64)->nullable('false')->default('')->comment('文件名称');
             $table->string('module', 16)->nullable('false')->default('')->comment('模块名称');
             $table->json('param')->comment('参数');
             $table->string('url')->nullable('false')->default('')->comment('下载路径');

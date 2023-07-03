@@ -34,7 +34,7 @@ class ExportTask extends Model
     ];
 
     protected $casts = [
-        'param' => 'json'
+        'param' => 'array'
     ];
 
     public static $moduleMap = [

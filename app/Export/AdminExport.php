@@ -2,8 +2,10 @@
 
 namespace App\Export;
 
+use App\Filters\AdminFilters;
 use App\Models\Admin;
 use App\Models\ExportTask;
+use Illuminate\Http\Request;
 
 class AdminExport
 {
@@ -26,20 +28,11 @@ class AdminExport
         $excel = Xlswriter::getExcel();
         $excel = $excel->fileName($this->task->name . '.xls')->header(self::$header);
 
-        $param = $this->task->param;
-        $name = $param['name'] ?? '';
-        $phone = $param['phone'] ?? '';
-        $sex = $param['sex'] ?? '';
+        $request = (new Request())->replace($this->task->param);
+        $filters = new AdminFilters($request);
+
         Admin::latest()
-            ->when($name, function ($q) use ($name) {
-                return $q->where('name', 'like', '%' . $name . '%');
-            })
-            ->when($phone, function ($q) use ($phone) {
-                return $q->where('phone', 'like', $phone . '%');
-            })
-            ->when($sex, function ($q) use ($sex) {
-                return $q->where('sex', $sex);
-            })->cursor()->each(function ($admin, $index) use ($excel) {
+            ->filter($filters)->cursor()->each(function ($admin, $index) use ($excel) {
                 $excel->insertText($index + 1, 0, $admin->name);
                 $excel->insertText($index + 1, 1, $admin->sex_name);
                 $excel->insertText($index + 1, 2, $admin->phone);

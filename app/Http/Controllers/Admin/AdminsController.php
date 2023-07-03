@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Filters\AdminFilters;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\AdminRequest;
 use App\Http\Requests\Admin\UpdateAdminRequest;
@@ -40,27 +41,16 @@ class AdminsController extends Controller
         return $this->success([], '删除成功');
     }
 
-    public function index(Request $request): JsonResponse
+    public function index(Request $request, AdminFilters $filters): JsonResponse
     {
         $perPage = $request->input('perPage', 15);
-        $admins = Admin::latest()
-            ->when($name = $request->input('name'), function ($q) use ($name) {
-                return $q->where('name', 'like', '%' . $name . '%');
-            })
-            ->when($phone = $request->input('phone'), function ($q) use ($phone) {
-                return $q->where('phone', 'like', $phone . '%');
-            })
-            ->when($sex = $request->input('sex'), function ($q) use ($sex) {
-                return $q->where('sex', $sex);
-            })
-            ->paginate($perPage);
-
+        $admins = Admin::latest()->filter($filters)->paginate($perPage);
         return $this->success($this->formatPaginatorData(AdminResource::collection($admins)));
     }
 
     public function addExportTask(Request $request): JsonResponse
     {
-        $exportTask = ExportTask::addTask('导出管理员' . auth()->id() . Carbon::now()->toDateTimeString(), 'admin', $request->all());
+        $exportTask = ExportTask::addTask('导出管理员' . ExportTask::exportFilesSuffix(), 'admin', $request->all());
         ExportTaskJob::dispatch($exportTask);
         return $this->success();
     }
