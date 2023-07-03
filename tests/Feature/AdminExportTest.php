@@ -58,9 +58,5 @@ class AdminExportTest extends TestCase
         // 判断数据是否符合预期
         $this->assertEquals($expectedData, $actualData);
     }
-
-    public function readExcelData($filePath)
-    {
-
-    }
+    
 }
