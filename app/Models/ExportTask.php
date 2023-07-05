@@ -8,6 +8,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * @property mixed module
  * @property mixed param
+ * @property mixed|string url
+ * @property int|mixed status
  */
 class ExportTask extends Model
 {
@@ -40,6 +42,7 @@ class ExportTask extends Model
     public static $moduleMap = [
         'admin' => 'AdminExport',
     ];
+
 
     public static function addTask($name, $module, $param = [])
     {
