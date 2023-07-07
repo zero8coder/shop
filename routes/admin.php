@@ -14,6 +14,11 @@ Route::prefix('v1')
             ->name('admins.login');
 
         Route::middleware('auth:admin')->group(function () {
+
+            // 后台人员展示自己信息
+            Route::get('admins/me', [AdminsController::class, 'me'])
+                ->name('admins.me');
+
             // 添加后台人员
             Route::post('admins', [AdminsController::class, 'store'])
                 ->name('admins.store');
@@ -37,6 +42,7 @@ Route::prefix('v1')
             // 后台人员展示
             Route::get('admins/{admin}', [AdminsController::class, 'show'])
                 ->name('admins.show');
+
 
         });
 

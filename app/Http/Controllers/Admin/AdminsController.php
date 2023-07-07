@@ -60,4 +60,9 @@ class AdminsController extends Controller
     {
         return $this->success(new AdminResource($admin));
     }
+
+    public function me(): JsonResponse
+    {
+        return $this->success(new AdminResource(auth('admin')->user()));
+    }
 }
