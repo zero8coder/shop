@@ -15,6 +15,7 @@ class AdminResource extends JsonResource
             'phone' => $this->phone,
             'email' => $this->email,
             'sex' => Admin::$sexMap[$this->sex] ?? '',
+            'avatar' => $this->avatar
         ];
     }
 }
