@@ -13,6 +13,7 @@ use App\Models\ExportTask;
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class AdminsController extends Controller
 {
@@ -53,5 +54,10 @@ class AdminsController extends Controller
         $exportTask = ExportTask::addTask('导出管理员' . ExportTask::exportFilesSuffix(), 'admin', $request->all());
         ExportTaskJob::dispatch($exportTask);
         return $this->success();
+    }
+
+    public function show(Admin $admin): JsonResponse
+    {
+        return $this->success(new AdminResource($admin));
     }
 }

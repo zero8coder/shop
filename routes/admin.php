@@ -33,6 +33,11 @@ Route::prefix('v1')
             // 后台人员导出任务
             Route::post('admins/exportTask', [AdminsController::class, 'addExportTask'])
                 ->name('admins.exportTask');
+
+            // 后台人员展示
+            Route::get('admins/{admin}', [AdminsController::class, 'show'])
+                ->name('admins.show');
+
         });
 
     });
