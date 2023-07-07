@@ -15,19 +15,21 @@ class UserLoginTest extends TestCase
         $user = User::factory()->create();
 
         $response = $this->post(route('api.v1.authorizations.store'), [
-            'grant_type' => 'password',
-            'client_id' => $client->id,
+            'grant_type'    => 'password',
+            'client_id'     => $client->id,
             'client_secret' => $client->secret,
-            'username' => $user->email,
-            'password' => 'password',
+            'username'      => $user->email,
+            'password'      => 'password',
         ]);
 
         $response->assertStatus(201);
         $response->assertJsonStructure([
-            'token_type',
-            'expires_in',
-            'access_token',
-            'refresh_token'
+            'data' => [
+                'token_type',
+                'expires_in',
+                'access_token',
+                'refresh_token'
+            ]
         ]);
     }
 
@@ -52,9 +54,9 @@ class UserLoginTest extends TestCase
         $data = $response->json();
         $captcha_key = $data['data']['captcha_key'];
         $response = $this->post(route('api.v1.users.store'), [
-            'name' => 'king',
-            'password' => '123434',
-            'verification_key' => $captcha_key,
+            'name'              => 'king',
+            'password'          => '123434',
+            'verification_key'  => $captcha_key,
             'verification_code' => (Cache::get($captcha_key))['code'],
         ]);
         $response->assertStatus(200);

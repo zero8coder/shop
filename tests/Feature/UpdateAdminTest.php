@@ -15,7 +15,7 @@ class UpdateAdminTest extends TestCase
         $admin->phone = '13160675342';
         $admin->email = '812419393@qq.com';
         $admin->sex = Admin::SEX_WOMAN;
-        $this->patch(route('admin.v1.admins.update', ['admin' => $admin->id]), $admin->toArray());
+        $this->json('patch', route('admin.v1.admins.update', ['admin' => $admin->id]), $admin->toArray());
         tap($admin->fresh(), function ($admin) {
             $this->assertEquals('13160675342', $admin->phone);
             $this->assertEquals('812419393@qq.com', $admin->email);

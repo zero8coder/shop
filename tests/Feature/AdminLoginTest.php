@@ -13,19 +13,21 @@ class AdminLoginTest extends TestCase
         $admin = Admin::factory()->create();
 
         $response = $this->post(route('admin.v1.admins.login'), [
-            'grant_type' => 'password',
-            'client_id' => $client->id,
+            'grant_type'    => 'password',
+            'client_id'     => $client->id,
             'client_secret' => $client->secret,
-            'username' => $admin->name,
-            'password' => 'password',
+            'username'      => $admin->name,
+            'password'      => 'password',
         ]);
 
         $response->assertStatus(201);
         $response->assertJsonStructure([
-            'token_type',
-            'expires_in',
-            'access_token',
-            'refresh_token'
+            'data' => [
+                'token_type',
+                'expires_in',
+                'access_token',
+                'refresh_token'
+            ]
         ]);
     }
 }

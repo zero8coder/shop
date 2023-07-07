@@ -19,29 +19,12 @@ Route::prefix('v1')
             Route::get('admins/me', [AdminsController::class, 'me'])
                 ->name('admins.me');
 
-            // 添加后台人员
-            Route::post('admins', [AdminsController::class, 'store'])
-                ->name('admins.store');
-
-            // 修改后台人员
-            Route::patch('admins/{admin}', [AdminsController::class, 'update'])
-                ->name('admins.update');
-
-            // 删除后台人员
-            Route::delete('admins/{admin}', [AdminsController::class, 'destroy'])
-                ->name('admins.del');
-
-            // 后台人员列表
-            Route::get('admins/index', [AdminsController::class, 'index'])
-                ->name('admins.index');
-
             // 后台人员导出任务
             Route::post('admins/exportTask', [AdminsController::class, 'addExportTask'])
                 ->name('admins.exportTask');
 
-            // 后台人员展示
-            Route::get('admins/{admin}', [AdminsController::class, 'show'])
-                ->name('admins.show');
+            // 后台人员
+            Route::resource('admins', 'AdminsController');
 
 
         });
