@@ -9,9 +9,10 @@ use Psr\Http\Message\ServerRequestInterface;
 
 class AuthorizationsController extends AccessTokenController
 {
+    use ApiResponse;
     public function store(ServerRequestInterface $request)
     {
-        return $this->issueToken($request)->setStatusCode(201);
+        return $this->success(json_decode($this->issueToken($request)->getContent(), true), '请求成功', \Symfony\Component\HttpFoundation\Response::HTTP_CREATED);
     }
 
     public function update(ServerRequestInterface $request): Response
