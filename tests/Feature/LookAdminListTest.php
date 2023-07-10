@@ -31,7 +31,7 @@ class LookAdminListTest extends TestCase
     }
 
     // 看管理员列表设置分页
-    public function test_look_admin_list_set_pageSize()
+    public function test_look_admin_list_set_perPage()
     {
         $this->signInAdmin();
         $perPage = 3;

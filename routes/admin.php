@@ -26,6 +26,14 @@ Route::prefix('v1')
             // 后台人员
             Route::resource('admins', 'AdminsController');
 
+            // 权限
+            Route::resource('permissions', 'PermissionsController')->only([
+                'index',
+                'store',
+                'update',
+                'destroy'
+            ]);
+
 
         });
 

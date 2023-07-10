@@ -46,7 +46,7 @@ class AdminsController extends Controller
     {
         $perPage = $request->input('perPage', 15);
         $admins = Admin::latest()->filter($filters)->paginate($perPage);
-        return $this->success($this->formatPaginatorData(AdminResource::collection($admins)));
+        return $this->success(AdminResource::collection($admins));
     }
 
     public function addExportTask(Request $request): JsonResponse

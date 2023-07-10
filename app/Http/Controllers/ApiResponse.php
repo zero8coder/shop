@@ -3,6 +3,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Resources\Json\AnonymousResourceCollection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Symfony\Component\HttpFoundation\Response;
@@ -11,14 +12,16 @@ trait ApiResponse
 {
     /**
      * 返回成功信息
-     * @param  $data
+     * @param array $data
      * @param string $message
-     * @param int $code
-     * @param bool $status
-     * @return \Illuminate\Http\JsonResponse
+     * @param int $http_code
+     * @param int $business_code
+     * @param string $status
+     * @return JsonResponse
      */
-    public function success($data = [], string $message = "请求成功", $http_code = Response::HTTP_OK, int $business_code = Response::HTTP_OK, $status = 'success'): \Illuminate\Http\JsonResponse
+    public function success($data = [], string $message = "请求成功", $http_code = Response::HTTP_OK, int $business_code = Response::HTTP_OK, $status = 'success'): JsonResponse
     {
+        $data = $this->formatPaginatorData($data);
         return response()->json(['status' => $status, 'code' => $business_code, 'message' => $message, 'data' => $data], $http_code);
     }
 
@@ -27,9 +30,9 @@ trait ApiResponse
      * @param $message
      * @param $code
      * @param string $status
-     * @return \Illuminate\Http\JsonResponse
+     * @return JsonResponse
      */
-    public function error($message, $http_code = Response::HTTP_INTERNAL_SERVER_ERROR, $business_code = 500, string $status = 'error'): \Illuminate\Http\JsonResponse
+    public function error($message, $http_code = Response::HTTP_INTERNAL_SERVER_ERROR, $business_code = 500, string $status = 'error'): JsonResponse
     {
         return response()->json(['status' => $status, 'code' => $business_code, 'message' => $message], $http_code);
     }
