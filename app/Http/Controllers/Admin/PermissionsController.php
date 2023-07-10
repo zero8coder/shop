@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PermissionRequest;
 use App\Http\Resources\PermissionResource;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Spatie\Permission\Models\Permission;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -28,6 +29,10 @@ class PermissionsController extends Controller
         return $this->success(new PermissionResource($permission), '创建成功', Response::HTTP_CREATED);
     }
 
+    public function edit(Permission $permission)
+    {
+        return $this->success(new PermissionResource($permission));
+    }
 
     public function update(PermissionRequest $request, Permission $permission)
     {

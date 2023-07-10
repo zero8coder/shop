@@ -106,4 +106,20 @@ class PermissionTest extends TestCase
         ]);
     }
 
+    public function test_unauthorized_permission_edit()
+    {
+        $response = $this->json('GET', route("admin.v1.permissions.edit", ['permission' => 1]));
+        $response->assertStatus(401);
+    }
+
+    public function test_permission_edit()
+    {
+        $this->signInAdmin();
+        $permission = (new PermissionFactory())->create(['name' => 'pp1']);
+        $response = $this->json('GET', route("admin.v1.permissions.edit", ['permission' =>  $permission->id]));
+        $response->assertStatus(200);
+        $response->assertSee($permission->name);
+
+    }
+
 }

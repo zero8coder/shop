@@ -30,6 +30,7 @@ Route::prefix('v1')
             Route::resource('permissions', 'PermissionsController')->only([
                 'index',
                 'store',
+                'edit',
                 'update',
                 'destroy'
             ]);
