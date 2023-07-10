@@ -5,17 +5,20 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RoleRequest;
 use App\Http\Resources\Admin\RoleResource;
-use App\Http\Resources\PermissionResource;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
 
 class RolesController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $roles = Role::latest()
+            ->when($name = $request->input('name'), function ($query) use ($name) {
+                return $query->where('name', $name);
+            })
+            ->paginate($request->input('perPage', 15));
+        return $this->success(RoleResource::collection($roles));
     }
 
     public function create(): \Illuminate\Http\JsonResponse
@@ -34,46 +37,26 @@ class RolesController extends Controller
         $role->load('permissions');
 
         return $this->success(new RoleResource($role));
-
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    public function edit(Role $role)
+    public function edit(Role $role): \Illuminate\Http\JsonResponse
     {
         $role->load('permissions');
         return $this->success(new RoleResource($role));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
+    public function update(RoleRequest $request, Role $role): \Illuminate\Http\JsonResponse
     {
-        //
+        $role->name = $request->input('name');
+        $role->syncPermissions($request->input('permissions'));
+        $role->load('permissions');
+        return $this->success(new RoleResource($role));
+
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function destroy(Role $role): \Illuminate\Http\JsonResponse
     {
-        //
+        $role->delete();
+        return $this->success();
     }
 }

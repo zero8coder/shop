@@ -13,6 +13,7 @@ class RoleFactory extends Factory
     {
         return [
             'name' => 'role' . rand(0, 9999),
+            'guard_name' => 'admin'
         ];
     }
 }

@@ -14,6 +14,12 @@ class RoleRequest extends FormRequest
                     'name' => 'required|unique:roles,name',
                     'permissions' => 'array'
                 ];
+            case 'PUT':
+            case 'PATCH':
+            return [
+                'name' => 'required|unique:roles,name,' . $this->role->id,
+                'permissions' => 'array'
+            ];
         }
         return [];
     }
