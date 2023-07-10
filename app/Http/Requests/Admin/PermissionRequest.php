@@ -9,6 +9,10 @@ class PermissionRequest extends FormRequest
     public function rules(): array
     {
         switch ($this->method()) {
+            case 'POST':
+                return [
+                    'name' => 'required|unique:permissions,name'
+                ];
             case 'PUT':
             case 'PATCH':
                 return [

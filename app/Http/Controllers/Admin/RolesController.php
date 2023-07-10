@@ -3,9 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\RoleRequest;
+use App\Http\Resources\Admin\RoleResource;
 use App\Http\Resources\PermissionResource;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class RolesController extends Controller
 {
@@ -20,9 +23,17 @@ class RolesController extends Controller
         return $this->success(['permissions' => $permissions]);
     }
 
-    public function store(Request $request)
+    public function store(RoleRequest $request)
     {
-        //
+        $permissions = $request->input('permissions');
+        $role =  Role::create(['name' => $request->input('name')]);
+        if (!empty($permissions)) {
+            $role->syncPermissions($permissions);
+        }
+        $role->load('permissions');
+
+        return $this->success(new RoleResource($role));
+
     }
 
     /**
