@@ -35,6 +35,8 @@ Route::prefix('v1')
                 'destroy'
             ]);
 
+            // 角色
+            Route::resource('roles', 'RolesController');
 
         });
 
