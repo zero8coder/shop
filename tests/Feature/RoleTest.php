@@ -10,7 +10,6 @@ use App\Models\Role;
 use Database\Factories\PermissionFactory;
 use Database\Factories\RoleFactory;
 use Illuminate\Support\Facades\Queue;
-use Storage;
 use Tests\TestCase;
 
 class RoleTest extends TestCase

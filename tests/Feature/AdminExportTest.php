@@ -58,6 +58,8 @@ class AdminExportTest extends TestCase
 
         // 判断数据是否符合预期
         $this->assertEquals($expectedData, $actualData);
+        // 删除生成的文件
+        unlink($filePath);
     }
 
 }
