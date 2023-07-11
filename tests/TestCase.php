@@ -60,4 +60,15 @@ abstract class TestCase extends BaseTestCase
         return $this;
     }
 
+    // 登录后的json请求
+    public function AuthorizationJson($method, $uri, array $data = [], array $headers = []): \Illuminate\Testing\TestResponse
+    {
+        // 检验链接未授权不能访问
+        $response = $this->json($method, $uri, $data, $headers);
+        $response->assertStatus(401);
+        // 授权登录
+        $this->signInAdmin();
+        return $this->json($method, $uri, $data, $headers);
+    }
+
 }
