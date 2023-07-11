@@ -2,12 +2,12 @@
 
 namespace App\Export;
 
-use App\Filters\AdminFilters;
-use App\Models\Admin;
+use App\Filters\RoleFilters;
 use App\Models\ExportTask;
+use App\Models\Role;
 use Illuminate\Http\Request;
 
-class AdminExport
+class RoleExport
 {
     private $task;
 
@@ -17,10 +17,11 @@ class AdminExport
     }
 
     public static $header = [
-        '姓名',
-        '性别',
-        '手机号',
-        '邮箱'
+        'id',
+        '角色',
+        '权限',
+        '创建时间',
+        '修改时间'
     ];
 
     public function handle()
@@ -29,18 +30,20 @@ class AdminExport
         $excel = $excel->fileName($this->task->name . '.xls')->header(self::$header);
 
         $request = (new Request())->replace($this->task->param);
-        $filters = new AdminFilters($request);
+        $filters = new RoleFilters($request);
 
         $speed = 1000;
         $index = 0;
-        Admin::latest()
+        Role::latest()
+            ->with('permissions')
             ->filter($filters)
-            ->chunkById($speed, function ($admins) use (&$index, $excel) {
-                $admins->each(function ($admin) use (&$index, $excel) {
-                    $excel->insertText($index + 1, 0, $admin->name);
-                    $excel->insertText($index + 1, 1, $admin->sex_name);
-                    $excel->insertText($index + 1, 2, $admin->phone);
-                    $excel->insertText($index + 1, 3, $admin->email);
+            ->chunkById($speed, function ($roles) use (&$index, $excel) {
+                $roles->each(function ($role) use (&$index, $excel) {
+                    $excel->insertText($index + 1, 0, $role->id);
+                    $excel->insertText($index + 1, 1, $role->name);
+                    $excel->insertText($index + 1, 2, $role->permissions->pluck('name')->join('|'));
+                    $excel->insertText($index + 1, 3, $role->created_at->toDateTimeString());
+                    $excel->insertText($index + 1, 4, $role->updated_at->toDateTimeString());
                     $index++;
                 });
             });

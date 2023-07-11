@@ -41,6 +41,7 @@ class ExportTask extends Model
 
     public static $moduleMap = [
         'admin' => 'AdminExport',
+        'role' => 'RoleExport',
     ];
 
 

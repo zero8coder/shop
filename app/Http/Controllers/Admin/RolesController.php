@@ -2,26 +2,29 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Filters\RoleFilters;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\RoleRequest;
 use App\Http\Resources\Admin\RoleResource;
+use App\Jobs\ExportTaskJob;
+use App\Models\ExportTask;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Spatie\Permission\Models\Permission;
-use Spatie\Permission\Models\Role;
+use App\Models\Role;
 
 class RolesController extends Controller
 {
-    public function index(Request $request)
+    public function index(Request $request, RoleFilters $filters)
     {
         $roles = Role::latest()
-            ->when($name = $request->input('name'), function ($query) use ($name) {
-                return $query->where('name', $name);
-            })
+            ->with('permissions')
+            ->filter($filters)
             ->paginate($request->input('perPage', 15));
         return $this->success(RoleResource::collection($roles));
     }
 
-    public function create(): \Illuminate\Http\JsonResponse
+    public function create(): JsonResponse
     {
         $permissions = Permission::all(['name', 'id']);
         return $this->success(['permissions' => $permissions]);
@@ -39,13 +42,13 @@ class RolesController extends Controller
         return $this->success(new RoleResource($role));
     }
 
-    public function edit(Role $role): \Illuminate\Http\JsonResponse
+    public function edit(Role $role): JsonResponse
     {
         $role->load('permissions');
         return $this->success(new RoleResource($role));
     }
 
-    public function update(RoleRequest $request, Role $role): \Illuminate\Http\JsonResponse
+    public function update(RoleRequest $request, Role $role): JsonResponse
     {
         $role->name = $request->input('name');
         $role->syncPermissions($request->input('permissions'));
@@ -54,9 +57,16 @@ class RolesController extends Controller
 
     }
 
-    public function destroy(Role $role): \Illuminate\Http\JsonResponse
+    public function destroy(Role $role): JsonResponse
     {
         $role->delete();
+        return $this->success();
+    }
+
+    public function addExportTask(Request $request): JsonResponse
+    {
+        $exportTask = ExportTask::addTask('导出角色' . ExportTask::exportFilesSuffix(), 'role', $request->all());
+        ExportTaskJob::dispatch($exportTask);
         return $this->success();
     }
 }

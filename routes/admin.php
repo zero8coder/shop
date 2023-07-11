@@ -38,6 +38,10 @@ Route::prefix('v1')
             // 角色
             Route::resource('roles', 'RolesController');
 
+            // 角色导出任务
+            Route::post('roles/exportTask', [\App\Http\Controllers\Admin\RolesController::class, 'addExportTask'])
+                ->name('roles.exportTask');
+
         });
 
     });

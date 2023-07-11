@@ -12,14 +12,14 @@ trait ApiResponse
 {
     /**
      * 返回成功信息
-     * @param array $data
+     * @param  $data
      * @param string $message
      * @param int $http_code
      * @param int $business_code
      * @param string $status
      * @return JsonResponse
      */
-    public function success($data = [], string $message = "请求成功", $http_code = Response::HTTP_OK, int $business_code = Response::HTTP_OK, $status = 'success'): JsonResponse
+    public function success($data = [], string $message = "请求成功", int $http_code = Response::HTTP_OK, int $business_code = Response::HTTP_OK, $status = 'success'): JsonResponse
     {
         $data = $this->formatPaginatorData($data);
         return response()->json(['status' => $status, 'code' => $business_code, 'message' => $message, 'data' => $data], $http_code);
@@ -28,11 +28,12 @@ trait ApiResponse
     /**
      * 返回失败信息
      * @param $message
-     * @param $code
+     * @param int $http_code
+     * @param int $business_code
      * @param string $status
      * @return JsonResponse
      */
-    public function error($message, $http_code = Response::HTTP_INTERNAL_SERVER_ERROR, $business_code = 500, string $status = 'error'): JsonResponse
+    public function error($message, int $http_code = Response::HTTP_INTERNAL_SERVER_ERROR, int $business_code = 500, string $status = 'error'): JsonResponse
     {
         return response()->json(['status' => $status, 'code' => $business_code, 'message' => $message], $http_code);
     }
