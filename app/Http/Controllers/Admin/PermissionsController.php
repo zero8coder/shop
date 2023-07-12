@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Filters\PermissionFilters;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PermissionRequest;
 use App\Http\Resources\Admin\PermissionResource;
 use App\Models\Permission;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class PermissionsController extends Controller
 {
-    public function index(Request $request): \Illuminate\Http\JsonResponse
+    public function index(Request $request, PermissionFilters $filters): JsonResponse
     {
         $permissions = Permission::latest()
-            ->when($name = $request->input('name'), function ($query) use ($name) {
-                return $query->where('name', $name);
-            })
+            ->filter($filters)
             ->paginate($request->input('perPage', 15));
         return $this->success(PermissionResource::collection($permissions));
     }
