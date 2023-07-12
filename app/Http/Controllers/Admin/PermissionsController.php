@@ -6,6 +6,8 @@ use App\Filters\PermissionFilters;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PermissionRequest;
 use App\Http\Resources\Admin\PermissionResource;
+use App\Jobs\ExportTaskJob;
+use App\Models\ExportTask;
 use App\Models\Permission;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -44,6 +46,13 @@ class PermissionsController extends Controller
     public function destroy(Permission $permission)
     {
         $permission->delete();
+        return $this->success();
+    }
+
+    public function addExportTask(Request $request): JsonResponse
+    {
+        $exportTask = ExportTask::addTask('导出权限' . ExportTask::exportFilesSuffix(), 'permission', $request->all());
+        ExportTaskJob::dispatch($exportTask);
         return $this->success();
     }
 }

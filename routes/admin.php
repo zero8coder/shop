@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminsController;
+use App\Http\Controllers\Admin\PermissionsController;
 use App\Http\Controllers\AuthorizationsController;
 use Illuminate\Support\Facades\Route;
 
@@ -34,6 +35,10 @@ Route::prefix('v1')
                 'update',
                 'destroy'
             ]);
+
+            // 权限导出
+            Route::post('permissions/exportTask', [PermissionsController::class, 'addExportTask'])
+                ->name('permissions.exportTask');
 
             // 角色
             Route::resource('roles', 'RolesController');

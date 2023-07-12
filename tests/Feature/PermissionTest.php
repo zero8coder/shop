@@ -2,7 +2,12 @@
 
 namespace Tests\Feature;
 
+use App\Export\PermissionExport;
+use App\Export\Xlswriter;
+use App\Jobs\ExportTaskJob;
+use App\Models\ExportTask;
 use App\Models\Permission;
+use Queue;
 use Tests\TestCase;
 
 class PermissionTest extends TestCase
@@ -120,4 +125,48 @@ class PermissionTest extends TestCase
 
     }
 
+    public function test_permission_export()
+    {
+        Queue::fake();
+        $response = $this->authorizationJson('post', route('admin.v1.permissions.exportTask'), []);
+        $response->assertStatus(200);
+        Queue::assertPushed(ExportTaskJob::class);
+    }
+
+    public function test_permission_export_task_job_handle()
+    {
+        $permission = Permission::factory()->create(['name' => 'pp1']);
+        $this->signInAdmin();
+        $name = '导出权限测试' . ExportTask::exportFilesSuffix();
+        $task = ExportTask::addTask($name, 'permission', []);
+        $job = new ExportTaskJob($task);
+        $result = $job->handle();
+        // 判断是否执行成功
+        $this->assertEquals(1, $result);
+        $filePath = base_path() . '/public/uploads/excel/' . $name . '.xls';
+        // 判断文件是否存在
+        $this->assertFileExists($filePath);
+
+        $expectedData = [
+            PermissionExport::$header,
+            [
+                $permission->id,
+                $permission->name,
+                $permission->created_at->toDateTimeString(),
+                $permission->updated_at->toDateTimeString()
+            ]
+        ]; // 预期的数据
+
+        $excel = Xlswriter::getExcel();
+        // 实际数据
+        $actualData = $excel->openFile($name . '.xls')
+            ->openSheet()
+            ->getSheetData();
+
+        // 判断数据是否符合预期
+        $this->assertEquals($expectedData, $actualData);
+        // 删除生成的文件
+        unlink($filePath);
+
+    }
 }
