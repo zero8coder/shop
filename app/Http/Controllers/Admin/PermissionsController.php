@@ -5,9 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\PermissionRequest;
 use App\Http\Resources\Admin\PermissionResource;
+use App\Models\Permission;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
-use Spatie\Permission\Models\Permission;
 use Symfony\Component\HttpFoundation\Response;
 
 class PermissionsController extends Controller

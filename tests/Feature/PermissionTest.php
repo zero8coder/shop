@@ -2,9 +2,7 @@
 
 namespace Tests\Feature;
 
-use Database\Factories\PermissionFactory;
-use Illuminate\Database\Eloquent\Factories\Factory;
-use Spatie\Permission\Models\Permission;
+use App\Models\Permission;
 use Tests\TestCase;
 
 class PermissionTest extends TestCase
@@ -18,7 +16,7 @@ class PermissionTest extends TestCase
     public function test_add_permission()
     {
         $this->signInAdmin();
-        $permission = (new PermissionFactory())->make();
+        $permission = Permission::factory()->make();
         $response = $this->json('post', route("admin.v1.permissions.store"), $permission->toArray());
         $response->assertStatus(201);
         $response = $response->json();
@@ -34,7 +32,7 @@ class PermissionTest extends TestCase
     public function test_permission_index()
     {
         $this->signInAdmin();
-        $permission = (new PermissionFactory())->create();
+        $permission = Permission::factory()->create();
         $response = $this->json('get', route("admin.v1.permissions.index"));
         $response->assertStatus(200);
         $response->assertSee($permission->name);
@@ -43,7 +41,7 @@ class PermissionTest extends TestCase
 
     public function test_permission_index_set_perPage()
     {
-        (new PermissionFactory())->count(10)->create();
+        Permission::factory()->count(10)->create();
         $this->signInAdmin();
         $perPage = 3;
         $response = $this->json('get', route("admin.v1.permissions.index"), ['perPage' => 3]);
@@ -54,8 +52,8 @@ class PermissionTest extends TestCase
 
     public function test_permission_index_by_name()
     {
-        (new PermissionFactory())->count(10)->create();
-        (new PermissionFactory())->create(['name' => 'pp1']);
+        Permission::factory()->count(10)->create();
+        Permission::factory()->create(['name' => 'pp1']);
 
         $this->signInAdmin();
         $response = $this->json('get', route("admin.v1.permissions.index"), ['name' => 'pp1']);
@@ -73,7 +71,7 @@ class PermissionTest extends TestCase
     public function test_permission_update()
     {
         $this->signInAdmin();
-        $permission = (new PermissionFactory())->create(['name' => 'pp1']);
+        $permission = Permission::factory()->create(['name' => 'pp1']);
         $response = $this->json('PUT', route("admin.v1.permissions.update", ['permission' => $permission->id]), ['name' => '李白']);
         $response->assertStatus(200);
         $response->assertJsonStructure([
@@ -93,7 +91,7 @@ class PermissionTest extends TestCase
     public function test_permission_destroy()
     {
         $this->signInAdmin();
-        $permission = (new PermissionFactory())->create(['name' => 'pp1']);
+        $permission = Permission::factory()->create(['name' => 'pp1']);
         $this->assertDatabaseCount('permissions', 1);
         $response = $this->json('DELETE', route("admin.v1.permissions.destroy", ['permission' => $permission->id]));
         $response->assertStatus(200);
@@ -115,7 +113,7 @@ class PermissionTest extends TestCase
     public function test_permission_edit()
     {
         $this->signInAdmin();
-        $permission = (new PermissionFactory())->create(['name' => 'pp1']);
+        $permission = Permission::factory()->create(['name' => 'pp1']);
         $response = $this->json('GET', route("admin.v1.permissions.edit", ['permission' =>  $permission->id]));
         $response->assertStatus(200);
         $response->assertSee($permission->name);

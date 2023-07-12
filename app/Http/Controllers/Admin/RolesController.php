@@ -8,9 +8,9 @@ use App\Http\Requests\Admin\RoleRequest;
 use App\Http\Resources\Admin\RoleResource;
 use App\Jobs\ExportTaskJob;
 use App\Models\ExportTask;
+use App\Models\Permission;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Spatie\Permission\Models\Permission;
 use App\Models\Role;
 
 class RolesController extends Controller
