@@ -79,7 +79,7 @@ class RoleTest extends TestCase
 
     public function test_role_destroy()
     {
-        $role = (new RoleFactory())->create();
+        $role = Role::factory()->create();
         $response = $this->authorizationJson('DELETE', route('admin.v1.roles.destroy', ['role' => $role->id]));
         $response->assertStatus(200);
         $this->assertDatabaseMissing('roles', $role->toArray());
@@ -87,7 +87,7 @@ class RoleTest extends TestCase
 
     public function test_role_index()
     {
-        $role = (new RoleFactory())->create();
+        $role = Role::factory()->create();
         $response = $this->authorizationJson('GET', route('admin.v1.roles.index'));
         $response->assertStatus(200);
         $response->assertSee($role->name);
@@ -95,8 +95,8 @@ class RoleTest extends TestCase
 
     public function test_role_index_by_name()
     {
-        $role = (new RoleFactory())->create(['name' => 'kkk3']);
-        (new RoleFactory())->count(3)->create();
+        $role = Role::factory()->create(['name' => 'kkk3']);
+        Role::factory()->count(3)->create();
         $response = $this->authorizationJson('GET', route('admin.v1.roles.index'), ['name' => 'kkk3']);
         $response->assertStatus(200);
         $response->assertSee($role->name);
