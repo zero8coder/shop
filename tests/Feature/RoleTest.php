@@ -14,6 +14,7 @@ use Tests\TestCase;
 
 class RoleTest extends TestCase
 {
+
     public function test_role_create()
     {
         $response = $this->authorizationJson('GET', route('admin.v1.roles.create'));
@@ -117,7 +118,7 @@ class RoleTest extends TestCase
         $role = $this->create_role_has_permissions();
         $this->signInAdmin();
         $name = '导出角色测试' . ExportTask::exportFilesSuffix();
-        $task = ExportTask::addTask($name, 'role', []);
+        $task = ExportTask::addTask($name, 'role', ['name' => $role->name]);
         $job = new ExportTaskJob($task);
         $result = $job->handle();
         // 判断是否执行成功

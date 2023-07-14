@@ -42,8 +42,12 @@ class AdminsController extends Controller
         return $this->success([], '删除成功');
     }
 
+    /**
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function index(Request $request, AdminFilters $filters): JsonResponse
     {
+        $this->authorize('viewAny', Admin::class);
         $perPage = $request->input('perPage', 15);
         $admins = Admin::latest()->filter($filters)->paginate($perPage);
         return $this->success(AdminResource::collection($admins));

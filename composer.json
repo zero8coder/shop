@@ -23,6 +23,7 @@
         "overtrue/laravel-socialite": "~3.0",
         "predis/predis": "^2.1",
         "propaganistas/laravel-phone": "^4.3",
+        "spatie/laravel-enum": "^3.0",
         "spatie/laravel-permission": "^5.10"
     },
     "require-dev": {

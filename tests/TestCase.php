@@ -2,10 +2,13 @@
 
 namespace Tests;
 
+use App\Enums\PermissionEnum;
+use App\Enums\RoleEnum;
 use App\Models\Admin;
 use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+use Illuminate\Support\Facades\Artisan;
 use Laravel\Passport\ClientRepository;
 use Laravel\Passport\Passport;
 
@@ -13,6 +16,19 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
     use DatabaseMigrations;
+
+    public function runSeeder()
+    {
+        Artisan::call('db:seed', ['--class' => 'PermissionsTableSeeder']);
+        Artisan::call('db:seed', ['--class' => 'RolesTableSeeder']);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->runSeeder();
+
+    }
 
     // 创建密码方式的用户客户端
     public function createUserPasswordClient(): \Laravel\Passport\Client
@@ -57,18 +73,28 @@ abstract class TestCase extends BaseTestCase
         $admin = $admin ?: Admin::factory()->create();
         Passport::actingAs($admin, [], 'admin');
         $this->actingAs($admin, 'admin');
+
         return $this;
     }
 
     // 登录后的json请求
-    public function AuthorizationJson($method, $uri, array $data = [], array $headers = []): \Illuminate\Testing\TestResponse
+    public function authorizationJson($method, $uri, array $data = [], array $headers = []): \Illuminate\Testing\TestResponse
     {
-        // 检验链接未授权不能访问
+        // 检验用户有没有登录问题
         $response = $this->json($method, $uri, $data, $headers);
         $response->assertStatus(401);
-        // 授权登录
+
+        // 用户登录
         $this->signInAdmin();
+
+        // 检验用户权限问题
+        $response = $this->json($method, $uri, $data, $headers);
+        $response->assertStatus(403);
+
+
+        auth('admin')->user()->assignRole(RoleEnum::SUPER_ADMIN);
         return $this->json($method, $uri, $data, $headers);
     }
+
 
 }
