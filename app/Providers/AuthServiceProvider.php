@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Enums\PermissionEnum;
 use App\Enums\RoleEnum;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 use Illuminate\Support\Facades\Gate;

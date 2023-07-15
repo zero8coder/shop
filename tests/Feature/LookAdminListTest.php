@@ -3,7 +3,6 @@
 namespace Tests\Feature;
 
 use App\Models\Admin;
-use Illuminate\Support\Facades\Artisan;
 use Tests\TestCase;
 
 class LookAdminListTest extends TestCase

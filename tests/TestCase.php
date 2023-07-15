@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use App\Enums\PermissionEnum;
 use App\Enums\RoleEnum;
 use App\Models\Admin;
 use App\Models\User;
