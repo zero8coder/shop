@@ -35,7 +35,7 @@ class AdminPolicy
 
     public function update(Admin $admin, Admin $processAdmin)
     {
-        //
+        return $admin->can(PermissionEnum::ADMINS_UPDATE);
     }
 
 

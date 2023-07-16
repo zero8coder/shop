@@ -31,6 +31,7 @@ class AdminsController extends Controller
 
     public function update(Admin $admin, UpdateAdminRequest $request): JsonResponse
     {
+        $this->authorize('update', $admin);
         $admin->fill($request->only(['phone', 'email', 'sex']))->update();
         return $this->success(new AdminResource($admin));
     }
