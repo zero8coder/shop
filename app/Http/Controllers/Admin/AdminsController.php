@@ -10,15 +10,14 @@ use App\Http\Resources\Admin\AdminResource;
 use App\Jobs\ExportTaskJob;
 use App\Models\Admin;
 use App\Models\ExportTask;
-use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Http\Resources\Json\JsonResource;
 
 class AdminsController extends Controller
 {
     public function store(AdminRequest $request): JsonResponse
     {
+        $this->authorize('create', Admin::class);
         $admin = Admin::create([
             'name' => $request->input('name'),
             'password' => $request->input('password'),

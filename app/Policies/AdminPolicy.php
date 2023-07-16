@@ -4,7 +4,6 @@ namespace App\Policies;
 
 use App\Enums\PermissionEnum;
 use App\Models\Admin;
-use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class AdminPolicy
@@ -24,33 +23,33 @@ class AdminPolicy
     }
 
 
-    public function view(User $user, Admin $admin)
+    public function view(Admin $admin, Admin $processAdmin)
     {
         //
     }
 
-    public function create(User $user)
+    public function create(Admin $admin)
+    {
+        return $admin->can(PermissionEnum::ADMINS_ADD);
+    }
+
+    public function update(Admin $admin, Admin $processAdmin)
     {
         //
     }
 
-    public function update(User $user, Admin $admin)
+
+    public function delete(Admin $admin, Admin $processAdmin)
     {
         //
     }
 
-
-    public function delete(User $user, Admin $admin)
+    public function restore(Admin $admin, Admin $processAdmin)
     {
         //
     }
 
-    public function restore(User $user, Admin $admin)
-    {
-        //
-    }
-
-    public function forceDelete(User $user, Admin $admin)
+    public function forceDelete(Admin $admin, Admin $processAdmin)
     {
         //
     }
