@@ -30,7 +30,7 @@ class AdminPolicy
 
     public function create(Admin $admin)
     {
-        return $admin->can(PermissionEnum::ADMINS_ADD);
+        return $admin->can(PermissionEnum::ADMINS_CREATE);
     }
 
     public function update(Admin $admin, Admin $processAdmin)
