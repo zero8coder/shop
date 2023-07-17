@@ -55,4 +55,10 @@ class AdminPolicy
     {
         //
     }
+
+    public function export(Admin $admin)
+    {
+        return $admin->can(PermissionEnum::ADMINS_EXPORT);
+    }
+
 }

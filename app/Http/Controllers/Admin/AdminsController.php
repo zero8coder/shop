@@ -56,6 +56,7 @@ class AdminsController extends Controller
 
     public function addExportTask(Request $request): JsonResponse
     {
+        $this->authorize('export', Admin::class);
         $exportTask = ExportTask::addTask('导出管理员' . ExportTask::exportFilesSuffix(), 'admin', $request->all());
         ExportTaskJob::dispatch($exportTask);
         return $this->success();
