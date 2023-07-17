@@ -13,6 +13,8 @@ class PermissionEnum extends Enum
     const ADMINS_EXPORT = '导出后台人员';
 
     const ROLES = '管理角色';
+    const ROLES_VIEW_ANY = '查看所有角色';
+
     const PERMISSIONS = '管理权限';
 
     public static $permissionValue = [
@@ -24,6 +26,8 @@ class PermissionEnum extends Enum
         self::ADMINS_EXPORT,
 
         self::ROLES,
+        self::ROLES_VIEW_ANY,
+
         self::PERMISSIONS
     ];
 }

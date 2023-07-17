@@ -20,12 +20,12 @@ class RolePolicy
 
     public function viewAny(Admin $admin)
     {
-        //
+        return $admin->can(PermissionEnum::ROLES_VIEW_ANY);
     }
 
     public function view(Admin $admin, Role $role)
     {
-        //
+
     }
 
 

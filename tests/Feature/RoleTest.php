@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\PermissionEnum;
 use App\Export\RoleExport;
 use App\Export\Xlswriter;
 use App\Jobs\ExportTaskJob;
@@ -89,6 +90,18 @@ class RoleTest extends TestCase
     public function test_role_index()
     {
         $role = Role::factory()->create();
+        $this->setRoles([]); // 清空登录用户的角色
+        $this->setPermissions([PermissionEnum::ROLES]);
+        $response = $this->authorizationJson('GET', route('admin.v1.roles.index'));
+        $response->assertStatus(200);
+        $response->assertSee($role->name);
+    }
+
+    public function test_role_index_by_permission_view_any()
+    {
+        $role = Role::factory()->create();
+        $this->setRoles([]); // 清空登录用户的角色
+        $this->setPermissions([PermissionEnum::ROLES_VIEW_ANY]); //查看所有角色权限
         $response = $this->authorizationJson('GET', route('admin.v1.roles.index'));
         $response->assertStatus(200);
         $response->assertSee($role->name);
