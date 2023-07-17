@@ -40,7 +40,7 @@ class AddAdminTest extends TestCase
         $admin = Admin::factory()->create();
         $this->signInAdmin($admin);
         // 管理后台人员权限
-        $admin->givePermissionTo(PermissionEnum::ADMINS);
+        $admin->givePermissionTo(PermissionEnum::ADMINS_MANAGE);
         $response = $this->addAdmin();
         $response->assertStatus(200);
         $response->assertsee('libai');

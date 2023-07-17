@@ -12,7 +12,7 @@ class AdminPolicy
 
     public function before(Admin $admin)
     {
-        if ($admin->can(PermissionEnum::ADMINS)) {
+        if ($admin->can(PermissionEnum::ADMINS_MANAGE)) {
             return true;
         }
     }

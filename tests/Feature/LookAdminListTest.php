@@ -8,6 +8,12 @@ use Tests\TestCase;
 
 class LookAdminListTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->setPermissions([PermissionEnum::ADMINS_MANAGE]);
+    }
+
     // 获取列表
     private function get_admin_list($postData = []): \Illuminate\Testing\TestResponse
     {
@@ -18,8 +24,7 @@ class LookAdminListTest extends TestCase
     public function test_look_admin_list()
     {
         $admin = Admin::factory()->create();
-        $this->setRoles([]);
-        $this->setPermissions([PermissionEnum::ADMINS]);
+        $this->setPermissions([PermissionEnum::ADMINS_MANAGE]);
         $response = $this->get_admin_list();
         $response->assertStatus(200);
         $response->assertSee($admin->name);
@@ -29,7 +34,6 @@ class LookAdminListTest extends TestCase
     public function test_look_admin_list_set_perPage()
     {
         $perPage = 3;
-        $this->setRoles([]);
         $this->setPermissions([PermissionEnum::ADMINS_VIEW_ANY]);
         $response = $this->get_admin_list(['perPage' => $perPage]);
         $response->assertStatus(200);

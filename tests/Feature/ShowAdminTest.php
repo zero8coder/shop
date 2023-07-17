@@ -18,8 +18,8 @@ class ShowAdminTest extends TestCase
 
     public function test_show_admin()
     {
-        $this->setRoles([]); // 清空角色
-        $this->setPermissions([PermissionEnum::ADMINS]); // 设置管理权限
+
+        $this->setPermissions([PermissionEnum::ADMINS_MANAGE]); // 设置管理权限
         $response = $this->authorizationJson('get', route('admin.v1.admins.show', ['admin' => $this->admin->id]));
         $response->assertStatus(200);
         $responseAdmin = $response->json();
@@ -29,7 +29,7 @@ class ShowAdminTest extends TestCase
     // 检测查看所有权限
     public function test_show_admin_by_permission_view_any()
     {
-        $this->setRoles([]); // 清空角色
+
         $this->setPermissions([PermissionEnum::ADMINS_VIEW_ANY]); // 设置查看所有权限
         $response = $this->authorizationJson('get', route('admin.v1.admins.show', ['admin' => $this->admin->id]));
         $response->assertStatus(200);

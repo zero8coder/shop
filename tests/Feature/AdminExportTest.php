@@ -16,8 +16,7 @@ class AdminExportTest extends TestCase
     public function test_admin_export()
     {
         Queue::fake();
-        $this->setRoles([]); // 清空角色
-        $this->setPermissions([PermissionEnum::ADMINS]); // 设置管理权限
+        $this->setPermissions([PermissionEnum::ADMINS_MANAGE]); // 设置管理权限
         $response = $this->authorizationJson('post', route('admin.v1.admins.exportTask'), []);
         $response->assertStatus(200);
         Queue::assertPushed(ExportTaskJob::class);
@@ -26,7 +25,6 @@ class AdminExportTest extends TestCase
     public function test_admin_export_by_permission_export()
     {
         Queue::fake();
-        $this->setRoles([]); // 清空角色
         $this->setPermissions([PermissionEnum::ADMINS_EXPORT]); // 设置导出权限
         $response = $this->authorizationJson('post', route('admin.v1.admins.exportTask'), []);
         $response->assertStatus(200);

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\PermissionEnum;
 use App\Export\PermissionExport;
 use App\Export\Xlswriter;
 use App\Jobs\ExportTaskJob;
@@ -12,6 +13,11 @@ use Tests\TestCase;
 
 class PermissionTest extends TestCase
 {
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->setPermissions([PermissionEnum::PERMISSIONS_MANAGE]);
+    }
 
     public function test_add_permission()
     {

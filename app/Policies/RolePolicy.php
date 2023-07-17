@@ -13,7 +13,7 @@ class RolePolicy
 
     public function before(Admin $admin)
     {
-        if ($admin->can(PermissionEnum::ROLES)) {
+        if ($admin->can(PermissionEnum::ROLES_MANAGE)) {
             return true;
         }
     }
@@ -57,6 +57,6 @@ class RolePolicy
 
     public function export(Admin $admin)
     {
-        //
+        return $admin->can(PermissionEnum::ROLES_EXPORT);
     }
 }

@@ -13,8 +13,7 @@ class DelAdminTest extends TestCase
     public function test_del_admin()
     {
         $admin = Admin::factory()->create();
-        $this->setRoles([]); // 清空角色
-        $this->setPermissions([PermissionEnum::ADMINS]); // 设置管理权限
+        $this->setPermissions([PermissionEnum::ADMINS_MANAGE]); // 设置管理权限
         $response = $this->authorizationJson('DELETE', route('admin.v1.admins.destroy', ['admin' => $admin->id]));
         $response->assertStatus(200);
         $this->assertDatabaseMissing('admins', ['id' => $admin->id]);
@@ -24,7 +23,6 @@ class DelAdminTest extends TestCase
     public function test_del_admin_by_permission_delete()
     {
         $admin = Admin::factory()->create();
-        $this->setRoles([]); // 清空角色
         $this->setPermissions([PermissionEnum::ADMINS_DELETE]); // 设置删除权限
         $response = $this->authorizationJson('DELETE', route('admin.v1.admins.destroy', ['admin' => $admin->id]));
         $response->assertStatus(200);

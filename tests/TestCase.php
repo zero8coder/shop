@@ -92,9 +92,9 @@ abstract class TestCase extends BaseTestCase
         $response = $this->json($method, $uri, $data, $headers);
         $response->assertStatus(403);
 
-        // 默认设置超级管理员
+        // 默认空角色
         auth('admin')->user()->syncRoles($this->roles);
-        // 设置权限
+        // 默认空权限
         auth('admin')->user()->syncPermissions($this->permissions);
 
         return $this->json($method, $uri, $data, $headers);
