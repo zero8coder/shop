@@ -81,7 +81,7 @@ abstract class TestCase extends BaseTestCase
     // 登录后的json请求
     public function authorizationJson($method, $uri, array $data = [], array $headers = []): \Illuminate\Testing\TestResponse
     {
-        // 检验用户有没有登录问题
+        // 检验用户有没有登录
         $response = $this->json($method, $uri, $data, $headers);
         $response->assertStatus(401);
 
@@ -92,10 +92,10 @@ abstract class TestCase extends BaseTestCase
         $response = $this->json($method, $uri, $data, $headers);
         $response->assertStatus(403);
 
+        // 设置角色
         auth('admin')->user()->syncRoles($this->roles);
-        if (!empty($this->permissions)) {
-            auth('admin')->user()->syncPermissions($this->permissions);
-        }
+        // 设置权限
+        auth('admin')->user()->syncPermissions($this->permissions);
 
         return $this->json($method, $uri, $data, $headers);
     }

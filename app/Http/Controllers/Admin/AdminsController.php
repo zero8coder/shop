@@ -38,6 +38,7 @@ class AdminsController extends Controller
 
     public function destroy(Admin $admin): JsonResponse
     {
+        $this->authorize('delete', $admin);
         $admin->delete();
         return $this->success([], '删除成功');
     }

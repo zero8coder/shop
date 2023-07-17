@@ -41,7 +41,7 @@ class AdminPolicy
 
     public function delete(Admin $admin, Admin $processAdmin)
     {
-        //
+        return $admin->can(PermissionEnum::ADMINS_DELETE);
     }
 
     public function restore(Admin $admin, Admin $processAdmin)

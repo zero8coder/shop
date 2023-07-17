@@ -22,6 +22,7 @@ class UpdateAdminTest extends TestCase
         $this->admin->email = '812419393@qq.com';
         $this->admin->sex = Admin::SEX_WOMAN;
         // 设置管理权限
+        $this->setRoles([]);
         $this->setPermissions([PermissionEnum::ADMINS]);
         $response = $this->authorizationJson('patch', route('admin.v1.admins.update', ['admin' => $this->admin->id]), $this->admin->toArray());
         $response->assertStatus(200);
@@ -38,7 +39,7 @@ class UpdateAdminTest extends TestCase
         $this->admin->phone = '13160675347';
         $this->admin->email = '812419393@qq.com';
         $this->admin->sex = Admin::SEX_WOMAN;
-
+        $this->setRoles([]);
         $this->setPermissions([PermissionEnum::ADMINS_UPDATE]);
 
         $response = $this->authorizationJson('patch', route('admin.v1.admins.update', ['admin' => $this->admin->id]), $this->admin->toArray());
