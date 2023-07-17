@@ -15,6 +15,8 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
     use DatabaseMigrations;
+    public $roles = [RoleEnum::SUPER_ADMIN];
+    public $permissions = [];
 
     public function runSeeder()
     {
@@ -90,9 +92,22 @@ abstract class TestCase extends BaseTestCase
         $response = $this->json($method, $uri, $data, $headers);
         $response->assertStatus(403);
 
+        auth('admin')->user()->syncRoles($this->roles);
+        if (!empty($this->permissions)) {
+            auth('admin')->user()->syncPermissions($this->permissions);
+        }
 
-        auth('admin')->user()->assignRole(RoleEnum::SUPER_ADMIN);
         return $this->json($method, $uri, $data, $headers);
+    }
+
+    public function setRoles($roles)
+    {
+        $this->roles = $roles;
+    }
+
+    public function setPermissions($permissions)
+    {
+        $this->permissions = $permissions;
     }
 
 

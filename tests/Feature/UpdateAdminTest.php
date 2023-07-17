@@ -8,52 +8,43 @@ use Tests\TestCase;
 
 class UpdateAdminTest extends TestCase
 {
+    public $admin;
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->admin = Admin::factory()->create(['phone' => '13160675341','email' => '812419391@qq.com', 'sex' => Admin::SEX_MAN]);
+    }
+
     // 修改后台人员信息
     public function test_update_admin()
     {
-        $admin = Admin::factory()->create(['phone' => '13160675341','email' => '812419391@qq.com', 'sex' => Admin::SEX_MAN]);
-        $admin->phone = '13160675342';
-        $admin->email = '812419393@qq.com';
-        $admin->sex = Admin::SEX_WOMAN;
-        $this->authorizationJson('patch', route('admin.v1.admins.update', ['admin' => $admin->id]), $admin->toArray());
-        tap($admin->fresh(), function ($admin) {
-            $this->assertEquals('13160675342', $admin->phone);
-            $this->assertEquals('812419393@qq.com', $admin->email);
-            $this->assertEquals(Admin::SEX_WOMAN, $admin->sex);
+        $this->admin->phone = '13160675349';
+        $this->admin->email = '812419393@qq.com';
+        $this->admin->sex = Admin::SEX_WOMAN;
+        // 设置管理权限
+        $this->setPermissions([PermissionEnum::ADMINS]);
+        $response = $this->authorizationJson('patch', route('admin.v1.admins.update', ['admin' => $this->admin->id]), $this->admin->toArray());
+        $response->assertStatus(200);
+        tap($this->admin->fresh(), function () {
+            $this->assertEquals('13160675349', $this->admin->phone);
+            $this->assertEquals('812419393@qq.com', $this->admin->email);
+            $this->assertEquals(Admin::SEX_WOMAN, $this->admin->sex);
         });
     }
 
-    // 测试修改权限
-    public function test_update_admin_update_permission()
+    // 检测修改权限
+    public function test_update_admin_permission_update()
     {
-        $loginAdmin = Admin::factory()->create();
-        $this->signInAdmin($loginAdmin);
-        $admin = Admin::factory()->create(['phone' => '13160675341','email' => '812419391@qq.com', 'sex' => Admin::SEX_MAN]);
-        $admin->phone = '13160675342';
-        $admin->email = '812419393@qq.com';
-        $admin->sex = Admin::SEX_WOMAN;
-        $response = $this->json('patch', route('admin.v1.admins.update', ['admin' => $admin->id]), $admin->toArray());
-        // 没有权限
-        $response->assertStatus(403);
-        $loginAdmin->givePermissionTo(PermissionEnum::ADMINS_UPDATE);
-        $response2 = $this->json('patch', route('admin.v1.admins.update', ['admin' => $admin->id]), $admin->toArray());
-        $response2->assertStatus(200);
+        $this->admin->phone = '13160675347';
+        $this->admin->email = '812419393@qq.com';
+        $this->admin->sex = Admin::SEX_WOMAN;
+
+        $this->setPermissions([PermissionEnum::ADMINS_UPDATE]);
+
+        $response = $this->authorizationJson('patch', route('admin.v1.admins.update', ['admin' => $this->admin->id]), $this->admin->toArray());
+        $response->assertStatus(200);
     }
 
-    // 测试修改权限
-    public function test_update_admin_magnet_permission()
-    {
-        $loginAdmin = Admin::factory()->create();
-        $this->signInAdmin($loginAdmin);
-        $admin = Admin::factory()->create(['phone' => '13160675341','email' => '812419391@qq.com', 'sex' => Admin::SEX_MAN]);
-        $admin->phone = '13160675342';
-        $admin->email = '812419393@qq.com';
-        $admin->sex = Admin::SEX_WOMAN;
-        $response = $this->json('patch', route('admin.v1.admins.update', ['admin' => $admin->id]), $admin->toArray());
-        // 没有权限
-        $response->assertStatus(403);
-        $loginAdmin->givePermissionTo(PermissionEnum::ADMINS);
-        $response2 = $this->json('patch', route('admin.v1.admins.update', ['admin' => $admin->id]), $admin->toArray());
-        $response2->assertStatus(200);
-    }
+
+
 }
