@@ -7,9 +7,8 @@ use App\Export\RoleExport;
 use App\Export\Xlswriter;
 use App\Jobs\ExportTaskJob;
 use App\Models\ExportTask;
+use App\Models\Permission;
 use App\Models\Role;
-use Database\Factories\PermissionFactory;
-use Database\Factories\RoleFactory;
 use Illuminate\Support\Facades\Queue;
 use Tests\TestCase;
 
@@ -54,8 +53,8 @@ class RoleTest extends TestCase
     public function test_role_store()
     {
 
-        $permission1 = (new PermissionFactory())->create(['name' => 'pp3']);
-        $permission2 = (new PermissionFactory())->create(['name' => 'pp4']);
+        $permission1 = Permission::factory()->create(['name' => 'pp3']);
+        $permission2 = Permission::factory()->create(['name' => 'pp4']);
 
         $data = [
             'name' => 'role1',
@@ -76,8 +75,8 @@ class RoleTest extends TestCase
 
         $this->setPermissions([PermissionEnum::ROLES_CREATE]);
 
-        $permission1 = (new PermissionFactory())->create(['name' => 'pp3']);
-        $permission2 = (new PermissionFactory())->create(['name' => 'pp4']);
+        $permission1 = Permission::factory()->create(['name' => 'pp3']);
+        $permission2 = Permission::factory()->create(['name' => 'pp4']);
 
         $data = [
             'name' => 'role1',
@@ -116,8 +115,8 @@ class RoleTest extends TestCase
     public function test_role_update()
     {
         $role = $this->create_role_has_permissions();
-        $permission3 = (new PermissionFactory())->create(['name' => 'pp5']);
-        $permission4 = (new PermissionFactory())->create(['name' => 'pp6']);
+        $permission3 = Permission::factory()->create(['name' => 'pp5']);
+        $permission4 = Permission::factory()->create(['name' => 'pp6']);
         $data = [
             'name' => 'kkk',
             'permissions' => [
@@ -135,8 +134,8 @@ class RoleTest extends TestCase
     public function test_role_update_by_permission_role_update()
     {
         $role = $this->create_role_has_permissions();
-        $permission3 = (new PermissionFactory())->create(['name' => 'pp5']);
-        $permission4 = (new PermissionFactory())->create(['name' => 'pp6']);
+        $permission3 = Permission::factory()->create(['name' => 'pp5']);
+        $permission4 = Permission::factory()->create(['name' => 'pp6']);
         $data = [
             'name' => 'kkk',
             'permissions' => [
@@ -155,6 +154,23 @@ class RoleTest extends TestCase
     public function test_role_destroy()
     {
         $role = Role::factory()->create();
+        $permission1 = Permission::factory()->create(['name' => 'permission1']);
+        $permission2 = Permission::factory()->create(['name' => 'permission2']);
+        $role->syncPermissions([
+            $permission1->id,
+            $permission2->id,
+        ]);
+        $this->assertDatabaseCount('role_has_permissions', 2);
+        $response = $this->authorizationJson('DELETE', route('admin.v1.roles.destroy', ['role' => $role->id]));
+        $response->assertStatus(200);
+        $this->assertDatabaseMissing('roles', $role->toArray());
+        $this->assertDatabaseCount('role_has_permissions', 0);
+    }
+
+    public function test_role_destroy_by_permission_role_delete()
+    {
+        $role = Role::factory()->create();
+        $this->setPermissions([PermissionEnum::ROLES_DELETE]);
         $response = $this->authorizationJson('DELETE', route('admin.v1.roles.destroy', ['role' => $role->id]));
         $response->assertStatus(200);
         $this->assertDatabaseMissing('roles', $role->toArray());
@@ -240,8 +256,8 @@ class RoleTest extends TestCase
     private function create_role_has_permissions()
     {
         $role = Role::factory()->create();
-        $permission1 = (new PermissionFactory())->create(['name' => 'permission1']);
-        $permission2 = (new PermissionFactory())->create(['name' => 'permission2']);
+        $permission1 = Permission::factory()->create(['name' => 'permission1']);
+        $permission2 = Permission::factory()->create(['name' => 'permission2']);
         $role->syncPermissions([
             $permission1->id,
             $permission2->id,

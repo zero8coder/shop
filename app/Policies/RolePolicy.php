@@ -42,7 +42,7 @@ class RolePolicy
 
     public function delete(Admin $admin, Role $role)
     {
-        //
+        return $admin->can(PermissionEnum::ROLES_DELETE);
     }
 
     public function restore(Admin $admin, Role $role)

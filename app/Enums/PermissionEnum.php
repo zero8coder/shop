@@ -16,6 +16,7 @@ class PermissionEnum extends Enum
     const ROLES_VIEW_ANY = '查看所有角色';
     const ROLES_CREATE = '添加角色';
     const ROLES_UPDATE = '修改角色';
+    const ROLES_DELETE = '删除角色';
 
     const PERMISSIONS = '管理权限';
 
@@ -31,6 +32,7 @@ class PermissionEnum extends Enum
         self::ROLES_VIEW_ANY,
         self::ROLES_CREATE,
         self::ROLES_UPDATE,
+        self::ROLES_DELETE,
 
         self::PERMISSIONS
     ];
