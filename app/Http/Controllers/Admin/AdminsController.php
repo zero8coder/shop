@@ -64,6 +64,7 @@ class AdminsController extends Controller
 
     public function show(Admin $admin): JsonResponse
     {
+        $this->authorize('view', $admin);
         return $this->success(new AdminResource($admin));
     }
 

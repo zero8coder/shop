@@ -2,9 +2,8 @@
 
 namespace Tests\Feature;
 
+use App\Enums\PermissionEnum;
 use App\Models\Admin;
-use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Foundation\Testing\WithFaker;
 use Tests\TestCase;
 
 class ShowAdminTest extends TestCase
@@ -17,17 +16,22 @@ class ShowAdminTest extends TestCase
         $this->admin = Admin::factory()->create();
     }
 
-    // 未授权不能查看
-    public function test_not_authorization_can_not_see_admin_detail()
-    {
-        $response = $this->json('get', route('admin.v1.admins.show', ['admin' => $this->admin->id]));
-        $response->assertStatus(401);
-    }
-
     public function test_show_admin()
     {
-        $this->signInAdmin($this->admin);
-        $response = $this->json('get', route('admin.v1.admins.show', ['admin' => $this->admin->id]));
+        $this->setRoles([]); // 清空角色
+        $this->setPermissions([PermissionEnum::ADMINS]); // 设置管理权限
+        $response = $this->authorizationJson('get', route('admin.v1.admins.show', ['admin' => $this->admin->id]));
+        $response->assertStatus(200);
+        $responseAdmin = $response->json();
+        $this->assertEquals($this->admin->name, $responseAdmin['data']['name']);
+    }
+
+    // 检测查看所有权限
+    public function test_show_admin_by_permission_view_any()
+    {
+        $this->setRoles([]); // 清空角色
+        $this->setPermissions([PermissionEnum::ADMINS_VIEW_ANY]); // 设置查看所有权限
+        $response = $this->authorizationJson('get', route('admin.v1.admins.show', ['admin' => $this->admin->id]));
         $response->assertStatus(200);
         $responseAdmin = $response->json();
         $this->assertEquals($this->admin->name, $responseAdmin['data']['name']);

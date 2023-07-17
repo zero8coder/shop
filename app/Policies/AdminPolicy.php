@@ -27,7 +27,9 @@ class AdminPolicy
 
     public function view(Admin $admin, Admin $processAdmin)
     {
-        //
+        if ($admin->can(PermissionEnum::ADMINS_VIEW_ANY)) {
+            return true;
+        }
     }
 
     public function create(Admin $admin)
@@ -44,16 +46,6 @@ class AdminPolicy
     public function delete(Admin $admin, Admin $processAdmin)
     {
         return $admin->can(PermissionEnum::ADMINS_DELETE);
-    }
-
-    public function restore(Admin $admin, Admin $processAdmin)
-    {
-        //
-    }
-
-    public function forceDelete(Admin $admin, Admin $processAdmin)
-    {
-        //
     }
 
     public function export(Admin $admin)
