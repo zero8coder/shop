@@ -15,7 +15,7 @@ abstract class TestCase extends BaseTestCase
 {
     use CreatesApplication;
     use DatabaseMigrations;
-    public $roles = [RoleEnum::SUPER_ADMIN];
+    public $roles = [];
     public $permissions = [];
 
     public function runSeeder()

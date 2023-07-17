@@ -31,12 +31,12 @@ class RolePolicy
 
     public function create(Admin $admin)
     {
-        //
+        return $admin->can(PermissionEnum::ROLES_CREATE);
     }
 
     public function update(Admin $admin, Role $role)
     {
-        //
+        return $admin->can(PermissionEnum::ROLES_UPDATE);
     }
 
 
