@@ -81,14 +81,14 @@ abstract class TestCase extends BaseTestCase
     // 登录后的json请求
     public function authorizationJson($method, $uri, array $data = [], array $headers = []): \Illuminate\Testing\TestResponse
     {
-        // 检验用户有没有登录
+        // 判断接口需要登录
         $response = $this->json($method, $uri, $data, $headers);
         $response->assertStatus(401);
 
         // 用户登录
         $this->signInAdmin();
 
-        // 检验用户权限问题
+        // 判断接口用户权限问题
         $response = $this->json($method, $uri, $data, $headers);
         $response->assertStatus(403);
 
