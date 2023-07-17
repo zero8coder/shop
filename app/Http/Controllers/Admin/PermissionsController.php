@@ -9,12 +9,16 @@ use App\Http\Resources\Admin\PermissionResource;
 use App\Jobs\ExportTaskJob;
 use App\Models\ExportTask;
 use App\Models\Permission;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class PermissionsController extends Controller
 {
+    /**
+     * @throws AuthorizationException
+     */
     public function index(Request $request, PermissionFilters $filters): JsonResponse
     {
         $this->authorize('viewAny', Permission::class);
@@ -25,20 +29,29 @@ class PermissionsController extends Controller
     }
 
 
-    public function store(Request $request)
+    /**
+     * @throws AuthorizationException
+     */
+    public function store(Request $request): JsonResponse
     {
         $this->authorize('create', Permission::class);
         $permission = Permission::create(['name' => $request->input('name')]);
         return $this->success(new PermissionResource($permission), '创建成功', Response::HTTP_CREATED);
     }
 
-    public function edit(Permission $permission)
+    /**
+     * @throws AuthorizationException
+     */
+    public function edit(Permission $permission): JsonResponse
     {
         $this->authorize('update', $permission);
         return $this->success(new PermissionResource($permission));
     }
 
-    public function update(PermissionRequest $request, Permission $permission)
+    /**
+     * @throws AuthorizationException
+     */
+    public function update(PermissionRequest $request, Permission $permission): JsonResponse
     {
         $this->authorize('update', $permission);
         $permission->name = $request->input('name');
@@ -47,13 +60,19 @@ class PermissionsController extends Controller
     }
 
 
-    public function destroy(Permission $permission)
+    /**
+     * @throws AuthorizationException
+     */
+    public function destroy(Permission $permission): JsonResponse
     {
         $this->authorize('delete', $permission);
         $permission->delete();
         return $this->success();
     }
 
+    /**
+     * @throws AuthorizationException
+     */
     public function addExportTask(Request $request): JsonResponse
     {
         $this->authorize('export', Permission::class);

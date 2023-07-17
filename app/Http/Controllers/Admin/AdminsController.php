@@ -10,11 +10,15 @@ use App\Http\Resources\Admin\AdminResource;
 use App\Jobs\ExportTaskJob;
 use App\Models\Admin;
 use App\Models\ExportTask;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class AdminsController extends Controller
 {
+    /**
+     * @throws AuthorizationException
+     */
     public function store(AdminRequest $request): JsonResponse
     {
         $this->authorize('create', Admin::class);
@@ -29,6 +33,9 @@ class AdminsController extends Controller
         return $this->success(new AdminResource($admin));
     }
 
+    /**
+     * @throws AuthorizationException
+     */
     public function update(Admin $admin, UpdateAdminRequest $request): JsonResponse
     {
         $this->authorize('update', $admin);
@@ -36,6 +43,9 @@ class AdminsController extends Controller
         return $this->success(new AdminResource($admin));
     }
 
+    /**
+     * @throws AuthorizationException
+     */
     public function destroy(Admin $admin): JsonResponse
     {
         $this->authorize('delete', $admin);
@@ -44,7 +54,7 @@ class AdminsController extends Controller
     }
 
     /**
-     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws AuthorizationException
      */
     public function index(Request $request, AdminFilters $filters): JsonResponse
     {
@@ -54,6 +64,9 @@ class AdminsController extends Controller
         return $this->success(AdminResource::collection($admins));
     }
 
+    /**
+     * @throws AuthorizationException
+     */
     public function addExportTask(Request $request): JsonResponse
     {
         $this->authorize('export', Admin::class);
@@ -62,6 +75,9 @@ class AdminsController extends Controller
         return $this->success();
     }
 
+    /**
+     * @throws AuthorizationException
+     */
     public function show(Admin $admin): JsonResponse
     {
         $this->authorize('view', $admin);

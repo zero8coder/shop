@@ -7,6 +7,9 @@ use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Spatie\Permission\Models\Permission as BasePermission;
 
+/**
+ * @method static latest()
+ */
 class Permission extends BasePermission
 {
     use HasFactory;

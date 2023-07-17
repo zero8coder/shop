@@ -12,6 +12,7 @@ use Spatie\Permission\Traits\HasRoles;
 /**
  * @method static latest()
  * @method static create(array $array)
+ * @method static where(array $array)
  * @property mixed sex
  */
 class Admin extends Authenticatable

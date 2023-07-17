@@ -59,7 +59,7 @@ class ExportTask extends Model
         ]);
     }
 
-    public function isWait()
+    public function isWait(): bool
     {
         return self::STATUS_WAIT == $this->status;
     }
