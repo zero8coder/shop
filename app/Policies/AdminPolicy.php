@@ -19,7 +19,9 @@ class AdminPolicy
 
     public function viewAny(Admin $admin)
     {
-
+        if ($admin->can(PermissionEnum::ADMINS_VIEW_ANY)) {
+            return true;
+        }
     }
 
 

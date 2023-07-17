@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Enums\PermissionEnum;
 use App\Models\Admin;
 use Tests\TestCase;
 
@@ -17,6 +18,8 @@ class LookAdminListTest extends TestCase
     public function test_look_admin_list()
     {
         $admin = Admin::factory()->create();
+        $this->setRoles([]);
+        $this->setPermissions([PermissionEnum::ADMINS]);
         $response = $this->get_admin_list();
         $response->assertStatus(200);
         $response->assertSee($admin->name);
@@ -26,6 +29,8 @@ class LookAdminListTest extends TestCase
     public function test_look_admin_list_set_perPage()
     {
         $perPage = 3;
+        $this->setRoles([]);
+        $this->setPermissions([PermissionEnum::ADMINS_VIEW_ANY]);
         $response = $this->get_admin_list(['perPage' => $perPage]);
         $response->assertStatus(200);
         $response = $response->json();
