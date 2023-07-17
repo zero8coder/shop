@@ -103,10 +103,19 @@ class RoleTest extends TestCase
         $response->assertSee('permission1');
     }
 
+    public function test_role_edit_by_permission_role_update()
+    {
+        $role = $this->create_role_has_permissions();
+        $this->setPermissions([PermissionEnum::ROLES_UPDATE]);
+        $response = $this->authorizationJson('GET', route('admin.v1.roles.edit', ['role' => $role->id]));
+        $response->assertStatus(200);
+        $response->assertSee($role->name);
+        $response->assertSee('permission1');
+    }
+
     public function test_role_update()
     {
         $role = $this->create_role_has_permissions();
-
         $permission3 = (new PermissionFactory())->create(['name' => 'pp5']);
         $permission4 = (new PermissionFactory())->create(['name' => 'pp6']);
         $data = [
@@ -116,6 +125,26 @@ class RoleTest extends TestCase
                 $permission4->id,
             ]
         ];
+        $response = $this->authorizationJson('PUT', route('admin.v1.roles.update', ['role' => $role->id]), $data);
+        $response->assertStatus(200);
+        $response->assertSee('kkk');
+        $response->assertSee($permission3->name);
+        $response->assertSee($permission4->name);
+    }
+
+    public function test_role_update_by_permission_role_update()
+    {
+        $role = $this->create_role_has_permissions();
+        $permission3 = (new PermissionFactory())->create(['name' => 'pp5']);
+        $permission4 = (new PermissionFactory())->create(['name' => 'pp6']);
+        $data = [
+            'name' => 'kkk',
+            'permissions' => [
+                $permission3->id,
+                $permission4->id,
+            ]
+        ];
+        $this->setPermissions([PermissionEnum::ROLES_UPDATE]);
         $response = $this->authorizationJson('PUT', route('admin.v1.roles.update', ['role' => $role->id]), $data);
         $response->assertStatus(200);
         $response->assertSee('kkk');
