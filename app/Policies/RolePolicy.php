@@ -23,12 +23,6 @@ class RolePolicy
         return $admin->can(PermissionEnum::ROLES_VIEW_ANY);
     }
 
-    public function view(Admin $admin, Role $role)
-    {
-
-    }
-
-
     public function create(Admin $admin)
     {
         return $admin->can(PermissionEnum::ROLES_CREATE);
@@ -43,16 +37,6 @@ class RolePolicy
     public function delete(Admin $admin, Role $role)
     {
         return $admin->can(PermissionEnum::ROLES_DELETE);
-    }
-
-    public function restore(Admin $admin, Role $role)
-    {
-        //
-    }
-
-    public function forceDelete(Admin $admin, Role $role)
-    {
-        //
     }
 
     public function export(Admin $admin)
