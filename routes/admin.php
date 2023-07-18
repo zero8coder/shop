@@ -47,6 +47,10 @@ Route::prefix('v1')
             Route::post('roles/exportTask', [\App\Http\Controllers\Admin\RolesController::class, 'addExportTask'])
                 ->name('roles.exportTask');
 
+            // 菜单
+            Route::resource('menus', 'MenusController')->only([
+                'index',
+            ]);
         });
 
     });

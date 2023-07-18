@@ -26,6 +26,9 @@ class PermissionEnum extends Enum
     const PERMISSIONS_DELETE = '删除权限';
     const PERMISSIONS_EXPORT = '导出权限';
 
+    const MENU_MANAGE = '管理菜单';
+    const MENU_VIEW_ANY = '查看所有菜单';
+
     public static $permissionValue = [
         self::ADMINS_MANAGE,
         self::ADMINS_VIEW_ANY,
@@ -46,6 +49,9 @@ class PermissionEnum extends Enum
         self::PERMISSIONS_CREATE,
         self::PERMISSIONS_UPDATE,
         self::PERMISSIONS_DELETE,
-        self::PERMISSIONS_EXPORT
+        self::PERMISSIONS_EXPORT,
+
+        self::MENU_MANAGE,
+        self::MENU_VIEW_ANY,
     ];
 }
