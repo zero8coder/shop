@@ -28,12 +28,31 @@ class PermissionTest extends TestCase
         $this->assertEquals($permission['name'], $response['data']['name']);
     }
 
+    public function test_add_permission_by_permission_create()
+    {
+        $permission = Permission::factory()->make();
+        $this->setPermissions([PermissionEnum::PERMISSIONS_CREATE]);
+        $response = $this->authorizationJson('post', route("admin.v1.permissions.store"), $permission->toArray());
+        $response->assertStatus(201);
+        $response = $response->json();
+        $this->assertEquals($permission['name'], $response['data']['name']);
+    }
+
     public function test_permission_index()
     {
         $permission = Permission::factory()->create();
         $response = $this->authorizationJson('get', route("admin.v1.permissions.index"));
         $response->assertStatus(200);
-        $response->assertSee($permission->name);
+        $this->assertDatabaseHas('permissions', $permission->toArray());
+    }
+
+    public function test_permission_index_by_permission_view_any()
+    {
+        $permission = Permission::factory()->create();
+        $this->setPermissions(PermissionEnum::PERMISSIONS_VIEW_ANY);
+        $response = $this->authorizationJson('get', route("admin.v1.permissions.index"));
+        $response->assertStatus(200);
+        $this->assertDatabaseHas('permissions', $permission->toArray());
     }
 
 
@@ -70,10 +89,40 @@ class PermissionTest extends TestCase
         ]);
     }
 
+    public function test_permission_update_by_permission_update()
+    {
+        $permission = Permission::factory()->create(['name' => 'pp1']);
+        $this->setPermissions([PermissionEnum::PERMISSIONS_UPDATE]);
+        $response = $this->authorizationJson('PUT', route("admin.v1.permissions.update", ['permission' => $permission->id]), ['name' => '李白']);
+        $response->assertStatus(200);
+        $response->assertJsonStructure([
+            'code',
+            'message',
+            'status',
+            'data'
+        ]);
+    }
+
     public function test_permission_destroy()
     {
         $permission = Permission::factory()->create(['name' => 'pp1']);
         $this->assertDatabaseHas('permissions', $permission->toArray());
+        $response = $this->authorizationJson('DELETE', route("admin.v1.permissions.destroy", ['permission' => $permission->id]));
+        $response->assertStatus(200);
+        $this->assertDatabaseMissing('permissions', $permission->toArray());
+        $response->assertJsonStructure([
+            'code',
+            'message',
+            'status',
+            'data'
+        ]);
+    }
+
+    public function test_permission_destroy_by_permission_delete()
+    {
+        $permission = Permission::factory()->create(['name' => 'pp1']);
+        $this->assertDatabaseHas('permissions', $permission->toArray());
+        $this->setPermissions([PermissionEnum::PERMISSIONS_DELETE]);
         $response = $this->authorizationJson('DELETE', route("admin.v1.permissions.destroy", ['permission' => $permission->id]));
         $response->assertStatus(200);
         $this->assertDatabaseMissing('permissions', $permission->toArray());
@@ -93,9 +142,28 @@ class PermissionTest extends TestCase
         $response->assertSee($permission->name);
     }
 
+    public function test_permission_edit_by_permission_update()
+    {
+        $permission = Permission::factory()->create(['name' => 'pp1']);
+        $this->setPermissions([PermissionEnum::PERMISSIONS_UPDATE]);
+        $response = $this->authorizationJson('GET', route("admin.v1.permissions.edit", ['permission' => $permission->id]));
+        $response->assertStatus(200);
+        $response->assertSee($permission->name);
+    }
+
+
     public function test_permission_export()
     {
         Queue::fake();
+        $response = $this->authorizationJson('post', route('admin.v1.permissions.exportTask'), []);
+        $response->assertStatus(200);
+        Queue::assertPushed(ExportTaskJob::class);
+    }
+
+    public function test_permission_export_by_permission_export()
+    {
+        Queue::fake();
+        $this->setPermissions([PermissionEnum::PERMISSIONS_EXPORT]);
         $response = $this->authorizationJson('post', route('admin.v1.permissions.exportTask'), []);
         $response->assertStatus(200);
         Queue::assertPushed(ExportTaskJob::class);
@@ -135,6 +203,5 @@ class PermissionTest extends TestCase
         $this->assertEquals($expectedData, $actualData);
         // 删除生成的文件
         unlink($filePath);
-
     }
 }

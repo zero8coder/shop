@@ -20,6 +20,11 @@ class PermissionEnum extends Enum
     const ROLES_EXPORT = '导出角色';
 
     const PERMISSIONS_MANAGE = '管理权限';
+    const PERMISSIONS_VIEW_ANY = '查看所有权限';
+    const PERMISSIONS_CREATE = '添加权限';
+    const PERMISSIONS_UPDATE = '修改权限';
+    const PERMISSIONS_DELETE = '删除权限';
+    const PERMISSIONS_EXPORT = '导出权限';
 
     public static $permissionValue = [
         self::ADMINS_MANAGE,
@@ -36,6 +41,11 @@ class PermissionEnum extends Enum
         self::ROLES_DELETE,
         self::ROLES_EXPORT,
 
-        self::PERMISSIONS_MANAGE
+        self::PERMISSIONS_MANAGE,
+        self::PERMISSIONS_VIEW_ANY,
+        self::PERMISSIONS_CREATE,
+        self::PERMISSIONS_UPDATE,
+        self::PERMISSIONS_DELETE,
+        self::PERMISSIONS_EXPORT
     ];
 }
