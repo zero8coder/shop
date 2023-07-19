@@ -29,6 +29,7 @@ class PermissionEnum extends Enum
     const MENU_MANAGE = '管理菜单';
     const MENU_VIEW_ANY = '查看所有菜单';
     const MENU_CREATE = '添加菜单';
+    const MENU_UPDATE = '修改菜单';
 
 
     public static $permissionValue = [
@@ -55,6 +56,7 @@ class PermissionEnum extends Enum
 
         self::MENU_MANAGE,
         self::MENU_VIEW_ANY,
-        self::MENU_CREATE
+        self::MENU_CREATE,
+        self::MENU_UPDATE
     ];
 }

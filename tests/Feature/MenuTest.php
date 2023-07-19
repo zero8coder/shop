@@ -35,9 +35,36 @@ class MenuTest extends TestCase
     public function test_menu_store()
     {
         $menu = Menu::factory()->make();
-        $response = $this->authorizationJson('post', route('admin.v1.menus.store', $menu->toArray()));
+        $response = $this->authorizationJson('post', route('admin.v1.menus.store'),  $menu->toArray());
         $response->assertStatus(200);
         $response->assertSee($menu->name);
 
+    }
+
+    public function test_menu_store_by_permission_create()
+    {
+        $menu = Menu::factory()->make();
+        $this->setPermissions(PermissionEnum::MENU_CREATE);
+        $response = $this->authorizationJson('post', route('admin.v1.menus.store'), $menu->toArray());
+        $response->assertStatus(200);
+        $response->assertSee($menu->name);
+
+    }
+
+    public function test_menu_update()
+    {
+        $menu = Menu::factory()->create();
+        $response = $this->authorizationJson('patch', route('admin.v1.menus.update', ['menu' => $menu->id]), ['name' => 'test_menu_1']);
+        $response->assertStatus(200);
+        $response->assertSee('test_menu_1');
+    }
+
+    public function test_menu_update_by_permission_update()
+    {
+        $menu = Menu::factory()->create();
+        $this->setPermissions(PermissionEnum::MENU_UPDATE);
+        $response = $this->authorizationJson('patch', route('admin.v1.menus.update', ['menu' => $menu->id]), ['name' => 'test_menu_1']);
+        $response->assertStatus(200);
+        $response->assertSee('test_menu_1');
     }
 }

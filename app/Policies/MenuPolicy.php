@@ -23,48 +23,16 @@ class MenuPolicy
         return $admin->can(PermissionEnum::MENU_VIEW_ANY);
     }
 
-    /**
-     * Determine whether the user can view the model.
-     *
-     * @param  \App\Models\Admin  $admin
-     * @param  \App\Models\Menu  $menu
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
-    public function view(Admin $admin, Menu $menu)
-    {
-        //
-    }
-
-    /**
-     * Determine whether the user can create models.
-     *
-     * @param  \App\Models\Admin  $admin
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
     public function create(Admin $admin)
     {
-        return  $admin->can(PermissionEnum::MENU_CREATE);
+        return $admin->can(PermissionEnum::MENU_CREATE);
     }
 
-    /**
-     * Determine whether the user can update the model.
-     *
-     * @param  \App\Models\Admin  $admin
-     * @param  \App\Models\Menu  $menu
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
     public function update(Admin $admin, Menu $menu)
     {
-        //
+        return $admin->can(PermissionEnum::MENU_UPDATE);
     }
 
-    /**
-     * Determine whether the user can delete the model.
-     *
-     * @param  \App\Models\Admin  $admin
-     * @param  \App\Models\Menu  $menu
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
     public function delete(Admin $admin, Menu $menu)
     {
         //
@@ -73,8 +41,8 @@ class MenuPolicy
     /**
      * Determine whether the user can restore the model.
      *
-     * @param  \App\Models\Admin  $admin
-     * @param  \App\Models\Menu  $menu
+     * @param \App\Models\Admin $admin
+     * @param \App\Models\Menu $menu
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function restore(Admin $admin, Menu $menu)
@@ -85,8 +53,8 @@ class MenuPolicy
     /**
      * Determine whether the user can permanently delete the model.
      *
-     * @param  \App\Models\Admin  $admin
-     * @param  \App\Models\Menu  $menu
+     * @param \App\Models\Admin $admin
+     * @param \App\Models\Menu $menu
      * @return \Illuminate\Auth\Access\Response|bool
      */
     public function forceDelete(Admin $admin, Menu $menu)

@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\MenuRequest;
 use App\Models\Menu;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class MenusController extends Controller
 {
@@ -25,9 +25,6 @@ class MenusController extends Controller
         return $tree;
     }
 
-    /**
-     * @throws AuthorizationException
-     */
     public function index(): JsonResponse
     {
         $this->authorize('viewAny', Menu::class);
@@ -35,14 +32,19 @@ class MenusController extends Controller
         return $this->success($tree);
     }
 
-    /**
-     * @throws AuthorizationException
-     */
     public function store(MenuRequest $request, Menu $menu): JsonResponse
     {
         $this->authorize('create', Menu::class);
         $menu->fill($request->all());
         $menu->save();
+        return $this->success($menu);
+    }
+
+    public function update(Request $request, Menu $menu): JsonResponse
+    {
+        $this->authorize('update', $menu);
+        $menu->fill($request->all());
+        $menu->update();
         return $this->success($menu);
     }
 
