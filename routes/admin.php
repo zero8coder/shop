@@ -50,7 +50,9 @@ Route::prefix('v1')
             // 菜单
             Route::resource('menus', 'MenusController')->only([
                 'index',
+                'show',
                 'store',
+                'edit',
                 'update',
                 'destroy'
             ]);

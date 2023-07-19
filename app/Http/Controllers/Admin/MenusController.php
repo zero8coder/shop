@@ -33,11 +33,23 @@ class MenusController extends Controller
         return $this->success($tree);
     }
 
+    public function show(Menu $menu)
+    {
+        $this->authorize('viewAny', $menu);
+        return $this->success($menu);
+    }
+
     public function store(MenuRequest $request, Menu $menu): JsonResponse
     {
         $this->authorize('create', Menu::class);
         $menu->fill($request->all());
         $menu->save();
+        return $this->success($menu);
+    }
+
+    public function edit(Menu $menu)
+    {
+        $this->authorize('update', $menu);
         return $this->success($menu);
     }
 

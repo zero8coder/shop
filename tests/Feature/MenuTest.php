@@ -32,13 +32,29 @@ class MenuTest extends TestCase
         $response->assertSee($menu->name);
     }
 
+    public function test_menu_show()
+    {
+        $menu = Menu::factory()->create();
+        $response = $this->authorizationJson('get', route('admin.v1.menus.show', ['menu' => $menu->id]));
+        $response->assertStatus(200);
+        $response->assertSee($menu->name);
+    }
+
+    public function test_menu_show_by_permission_view_any()
+    {
+        $menu = Menu::factory()->create();
+        $this->setPermissions([PermissionEnum::MENU_VIEW_ANY]);
+        $response = $this->authorizationJson('get', route('admin.v1.menus.show', ['menu' => $menu->id]));
+        $response->assertStatus(200);
+        $response->assertSee($menu->name);
+    }
+
     public function test_menu_store()
     {
         $menu = Menu::factory()->make();
-        $response = $this->authorizationJson('post', route('admin.v1.menus.store'),  $menu->toArray());
+        $response = $this->authorizationJson('post', route('admin.v1.menus.store'), $menu->toArray());
         $response->assertStatus(200);
         $response->assertSee($menu->name);
-
     }
 
     public function test_menu_store_by_permission_create()
@@ -48,7 +64,23 @@ class MenuTest extends TestCase
         $response = $this->authorizationJson('post', route('admin.v1.menus.store'), $menu->toArray());
         $response->assertStatus(200);
         $response->assertSee($menu->name);
+    }
 
+    public function test_menu_edit()
+    {
+        $menu = Menu::factory()->create();
+        $response = $this->authorizationJson('get', route('admin.v1.menus.edit', ['menu' => $menu->id]));
+        $response->assertStatus(200);
+        $response->assertSee($menu->name);
+    }
+
+    public function test_menu_edit_by_permission_update()
+    {
+        $menu = Menu::factory()->create();
+        $this->setPermissions([PermissionEnum::MENU_UPDATE]);
+        $response = $this->authorizationJson('get', route('admin.v1.menus.edit', ['menu' => $menu->id]));
+        $response->assertStatus(200);
+        $response->assertSee($menu->name);
     }
 
     public function test_menu_update()
