@@ -25,7 +25,7 @@ class LookAdminListTest extends TestCase
     {
         $admin = Admin::factory()->create();
         $this->setPermissions([PermissionEnum::ADMINS_MANAGE]);
-        $response = $this->get_admin_list();
+        $response = $this->get_admin_list(['perPage' => 50]);
         $response->assertStatus(200);
         $response->assertSee($admin->name);
     }

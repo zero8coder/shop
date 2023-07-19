@@ -31,4 +31,13 @@ class MenuTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee($menu->name);
     }
+
+    public function test_menu_store()
+    {
+        $menu = Menu::factory()->make();
+        $response = $this->authorizationJson('post', route('admin.v1.menus.store', $menu->toArray()));
+        $response->assertStatus(200);
+        $response->assertSee($menu->name);
+
+    }
 }

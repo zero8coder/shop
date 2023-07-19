@@ -20,7 +20,7 @@ class MenuPolicy
 
     public function viewAny(Admin $admin)
     {
-        //
+        return $admin->can(PermissionEnum::MENU_VIEW_ANY);
     }
 
     /**
@@ -43,7 +43,7 @@ class MenuPolicy
      */
     public function create(Admin $admin)
     {
-        //
+        return  $admin->can(PermissionEnum::MENU_CREATE);
     }
 
     /**
