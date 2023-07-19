@@ -8,6 +8,8 @@ use App\Models\User;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Testing\TestResponse;
+use Laravel\Passport\Client;
 use Laravel\Passport\ClientRepository;
 use Laravel\Passport\Passport;
 
@@ -32,7 +34,7 @@ abstract class TestCase extends BaseTestCase
     }
 
     // 创建密码方式的用户客户端
-    public function createUserPasswordClient(): \Laravel\Passport\Client
+    public function createUserPasswordClient(): Client
     {
         $clientRepository = new ClientRepository();
         return $clientRepository->create(
@@ -46,7 +48,7 @@ abstract class TestCase extends BaseTestCase
     }
 
     // 创建密码方式的管理员客户端
-    public function createAdminPasswordClient(): \Laravel\Passport\Client
+    public function createAdminPasswordClient(): Client
     {
         $clientRepository = new ClientRepository();
         return $clientRepository->create(
@@ -79,7 +81,7 @@ abstract class TestCase extends BaseTestCase
     }
 
     // 登录后的json请求
-    public function authorizationJson($method, $uri, array $data = [], array $headers = []): \Illuminate\Testing\TestResponse
+    public function authorizationJson($method, $uri, array $data = [], array $headers = []): TestResponse
     {
         // 判断接口需要登录
         $response = $this->json($method, $uri, $data, $headers);
