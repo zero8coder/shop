@@ -35,7 +35,7 @@ class MenuPolicy
 
     public function delete(Admin $admin, Menu $menu)
     {
-        //
+        return $admin->can(PermissionEnum::MENU_DELETE);
     }
 
     /**

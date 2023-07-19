@@ -51,7 +51,8 @@ Route::prefix('v1')
             Route::resource('menus', 'MenusController')->only([
                 'index',
                 'store',
-                'update'
+                'update',
+                'destroy'
             ]);
         });
 

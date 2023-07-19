@@ -67,4 +67,21 @@ class MenuTest extends TestCase
         $response->assertStatus(200);
         $response->assertSee('test_menu_1');
     }
+
+    public function test_menu_delete()
+    {
+        $menu = Menu::factory()->create();
+        $response = $this->authorizationJson('delete', route('admin.v1.menus.destroy', ['menu' => $menu->id]), ['name' => 'test_menu_1']);
+        $response->assertStatus(200);
+        $this->assertDatabaseMissing('menus', $menu->toArray());
+    }
+
+    public function test_menu_delete_by_permission_delete()
+    {
+        $menu = Menu::factory()->create();
+        $this->setPermissions([PermissionEnum::MENU_DELETE]);
+        $response = $this->authorizationJson('delete', route('admin.v1.menus.destroy', ['menu' => $menu->id]), ['name' => 'test_menu_1']);
+        $response->assertStatus(200);
+        $this->assertDatabaseMissing('menus', $menu->toArray());
+    }
 }

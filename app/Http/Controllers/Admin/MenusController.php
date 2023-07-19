@@ -28,7 +28,8 @@ class MenusController extends Controller
     public function index(): JsonResponse
     {
         $this->authorize('viewAny', Menu::class);
-        $tree = $this->buildTree(Menu::all()->toArray());
+        $menu = Menu::orderby('id', 'asc')->get()->toArray();
+        $tree = $this->buildTree($menu);
         return $this->success($tree);
     }
 
@@ -46,6 +47,13 @@ class MenusController extends Controller
         $menu->fill($request->all());
         $menu->update();
         return $this->success($menu);
+    }
+
+    public function destroy(Menu $menu): JsonResponse
+    {
+        $this->authorize('delete', $menu);
+        $menu->delete();
+        return $this->success();
     }
 
 }
