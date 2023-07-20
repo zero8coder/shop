@@ -38,25 +38,11 @@ class MenuPolicy
         return $admin->can(PermissionEnum::MENU_DELETE);
     }
 
-    /**
-     * Determine whether the user can restore the model.
-     *
-     * @param \App\Models\Admin $admin
-     * @param \App\Models\Menu $menu
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
     public function restore(Admin $admin, Menu $menu)
     {
         //
     }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     *
-     * @param \App\Models\Admin $admin
-     * @param \App\Models\Menu $menu
-     * @return \Illuminate\Auth\Access\Response|bool
-     */
     public function forceDelete(Admin $admin, Menu $menu)
     {
         //

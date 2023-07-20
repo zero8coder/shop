@@ -25,7 +25,14 @@ Route::prefix('v1')
                 ->name('admins.exportTask');
 
             // 后台人员
-            Route::resource('admins', 'AdminsController');
+            Route::resource('admins', 'AdminsController')->only([
+                'index',
+                'show',
+                'store',
+                'edit',
+                'update',
+                'destroy'
+            ]);
 
             // 权限
             Route::resource('permissions', 'PermissionsController')->only([
