@@ -29,8 +29,17 @@ class AuthorizationsController extends AccessTokenController
             auth('api')->user()->token()->revoke();
             return response(null, 204);
         } else {
-            throw new AuthenticationException('The token is invalid.');
+            throw new AuthenticationException('token');
         }
+    }
 
+    public function logout()
+    {
+        if (auth('admin')->check()) {
+            auth('admin')->user()->token()->revoke();
+            return response(null, 204);
+        } else {
+            throw new AuthenticationException('token 非法');
+        }
     }
 }

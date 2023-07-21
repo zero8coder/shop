@@ -63,6 +63,10 @@ Route::prefix('v1')
                 'update',
                 'destroy'
             ]);
+
+            // 退出
+            Route::delete('logout', [AuthorizationsController::class, 'logout'])
+                ->name('admins.logout');
         });
 
     });
